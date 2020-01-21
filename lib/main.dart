@@ -43,17 +43,17 @@ TextTheme _appTextTheme(TextTheme base) {
 }
 
 void main() {
+  runApp(new MaterialApp(
+    home: Home(),
+  ));
   Workmanager.initialize(
       callbackDispatcher, // The top level function, aka callbackDispatcher
       isInDebugMode: true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
   );
   Workmanager.registerPeriodicTask(
-      "1",
-      "syncWithTheBackEnd",
+    "1",
+    "syncWithTheBackEnd",
   );
-  runApp(new MaterialApp(
-    home: Home(),
-  ));
 }
 
 void callbackDispatcher() {
