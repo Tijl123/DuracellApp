@@ -1,7 +1,7 @@
 import "dart:io";
 import "package:dart_amqp/dart_amqp.dart";
 
-void main (List<String> arguments) {
+void receive (List<String> arguments) {
     ConnectionSettings settings = new ConnectionSettings(
         host: "http://10.148.22.219:15672"
     );

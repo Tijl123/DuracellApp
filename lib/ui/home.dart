@@ -1,4 +1,5 @@
 import 'package:duracellapp/ui/log.dart';
+import 'package:duracellapp/ui/notification.dart';
 import 'package:duracellapp/ui/settings.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,8 @@ class _HomeState extends State<Home> {
   int _currentIndex = 0;
   final List<Widget> _children = [
     Log(),
-    Settings()
+    Settings(),
+    LocalNotificationWidget(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -32,6 +34,8 @@ class _HomeState extends State<Home> {
               icon: Icon(Icons.access_time), title: Text("Log")),
           BottomNavigationBarItem(
               icon: Icon(Icons.settings), title: Text("Settings")),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.add_location), title: Text("LocalNotificationWidget")),
         ],
       ),
     );
