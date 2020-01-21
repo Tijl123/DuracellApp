@@ -8,31 +8,35 @@ class Settings extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            CustomButton()
+            RaisedButton(
+              child: Text('Show alert'),
+              onPressed: () {
+                showAlertDialog(context);
+              },
+            ),
           ],
         ),
     );
   }
 }
 
-class CustomButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        final snackBar = SnackBar(
-          content: Text("Settings"),
-          backgroundColor: Colors.amberAccent.shade700,
-        );
+showAlertDialog(BuildContext context) {
 
-        Scaffold.of(context).showSnackBar(snackBar);
-      },
-      child: Container(
-        padding: EdgeInsets.all(10.0),
-        decoration: BoxDecoration(
-            color: Colors.pinkAccent, borderRadius: BorderRadius.circular(8.0)),
-        child: Text("Settings"),
-      ),
-    );
-  }
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text("Notificatie"),
+        content: Text("Sensor overflow"),
+        actions: [
+          FlatButton(
+          child: Text("OK"),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          ),
+        ],
+      );
+    },
+  );
 }

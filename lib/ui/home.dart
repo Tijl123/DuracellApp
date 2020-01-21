@@ -2,6 +2,7 @@ import 'package:duracellapp/ui/log.dart';
 import 'package:duracellapp/ui/notification.dart';
 import 'package:duracellapp/ui/settings.dart';
 import 'package:flutter/material.dart';
+import 'package:workmanager/workmanager.dart';
 
 class Home extends StatefulWidget {
   @override
