@@ -1,7 +1,7 @@
-import 'package:duracellapp/ui/settings.dart';
+import 'package:duracellapp/ui/home.dart';
 import 'package:flutter/material.dart';
 
-class Home extends StatelessWidget {
+class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,12 +25,12 @@ class Home extends StatelessWidget {
             break;
 
             case 1: {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()));
             }
             break;
 
             default: {
-              //statements;
+            //statements;
             }
             break;
           }
@@ -50,23 +50,23 @@ class Home extends StatelessWidget {
 }
 
 class CustomButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        final snackBar = SnackBar(
-          content: Text("Home"),
-          backgroundColor: Colors.amberAccent.shade700,
-        );
+@override
+Widget build(BuildContext context) {
+  return GestureDetector(
+    onTap: () {
+      final snackBar = SnackBar(
+        content: Text("Settings"),
+        backgroundColor: Colors.amberAccent.shade700,
+      );
 
-        Scaffold.of(context).showSnackBar(snackBar);
-      },
-      child: Container(
-        padding: EdgeInsets.all(10.0),
-        decoration: BoxDecoration(
-            color: Colors.pinkAccent, borderRadius: BorderRadius.circular(8.0)),
-        child: Text("Button"),
-      ),
-    );
-  }
+      Scaffold.of(context).showSnackBar(snackBar);
+    },
+    child: Container(
+      padding: EdgeInsets.all(10.0),
+      decoration: BoxDecoration(
+          color: Colors.pinkAccent, borderRadius: BorderRadius.circular(8.0)),
+      child: Text("Button"),
+    ),
+  );
+}
 }
