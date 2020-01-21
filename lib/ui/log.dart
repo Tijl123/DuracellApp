@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-class Settings extends StatelessWidget {
+class Log extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            CustomButton()
-          ],
-        ),
+      alignment: Alignment.center,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          CustomButton()
+        ],
+      ),
     );
   }
 }
@@ -21,7 +21,7 @@ class CustomButton extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         final snackBar = SnackBar(
-          content: Text("Settings"),
+          content: Text("Logs"),
           backgroundColor: Colors.amberAccent.shade700,
         );
 
@@ -31,7 +31,7 @@ class CustomButton extends StatelessWidget {
         padding: EdgeInsets.all(10.0),
         decoration: BoxDecoration(
             color: Colors.pinkAccent, borderRadius: BorderRadius.circular(8.0)),
-        child: Text("Settings"),
+        child: Text("Logs"),
       ),
     );
   }
