@@ -3,7 +3,7 @@ import "package:dart_amqp/dart_amqp.dart";
 
 void main (List<String> arguments) {
     ConnectionSettings settings = new ConnectionSettings(
-        host: "localhost"
+        host: "http://10.148.22.219:15672"
     );
 
     Client client = new Client(settings: settings);
