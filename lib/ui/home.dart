@@ -107,7 +107,7 @@ void receive (List<String> arguments, BuildContext context) {
       showAlertDialog(context, arr[0], arr[1]);
       LogModel log = new LogModel(id: null, sensor: arr[0], waarde: arr[1], datum: arr[2]);
       DBProvider.db.insertLog(log);
-      showOngoingNotification(notifications, title: arr[0], body: arr[1], id: int.parse(arr[1]));
+      showOngoingNotification(notifications, title: "Sensor: " + arr[0], body: "Waarde: " + arr[1], id: int.parse(arr[1]));
     });
   });
 }

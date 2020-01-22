@@ -1,44 +1,61 @@
 import 'package:flutter/material.dart';
 
-class Settings extends StatelessWidget {
+class Settings extends StatefulWidget {
+  @override
+  _State createState() => new _State();
 
+}
+
+class _State extends State<Settings> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  bool _value1 = false;
+  bool _value2 = false;
+
+  void _onChanged1(bool value){
+    setState(() {
+      _value1 = value;
+    });
+
+  }
+
+  void _onChanged2(bool value){
+    setState(() {
+      _value2 = value;
+    });
+
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            RaisedButton(
-              child: Text('Show alert'),
-              onPressed: () {
-                showAlertDialog(context);
-              },
-            ),
-          ],
-        ),
+      padding: new EdgeInsets.all(32.0),
+      child: new Column(
+        children: <Widget>[
+          new SwitchListTile(
+              title: new Text("sensor1"),
+              activeColor: Colors.red,
+              secondary: const Icon(Icons.adb),
+              value: _value1,
+              onChanged: (bool value){_onChanged1(value);}),
+          new SwitchListTile(
+            title: new Text("sensor2"),
+              activeColor: Colors.red,
+              secondary: const Icon(Icons.adb),
+              value: _value2,
+              onChanged: (bool value){_onChanged2(value);}),
+          new SwitchListTile(
+              title: new Text("sensor3"),
+              activeColor: Colors.red,
+              secondary: const Icon(Icons.adb),
+              value: _value2,
+              onChanged: (bool value){_onChanged2(value);})
+        ],
+      ),
     );
   }
-}
-
-showAlertDialog(BuildContext context) {
-
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text("Notificatie"),
-        content: Text("Sensor overflow"),
-        actions: [
-          FlatButton(
-          child: Text("OK"),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          ),
-        ],
-      );
-    },
-  );
 }

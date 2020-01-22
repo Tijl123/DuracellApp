@@ -5,6 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'LogModel.dart';
+import 'SensorModel.dart';
 
 class DBProvider {
   DBProvider._();
@@ -27,6 +28,10 @@ class DBProvider {
     return await openDatabase(path, version: 1, onOpen: (db) {
     }, onCreate: (Database db, int version) async {
       await db.execute("CREATE TABLE Log(id INTEGER PRIMARY KEY, sensor TEXT, waarde TEXT, datum TEXT)");
+      await db.execute("CREATE TABLE Sensor(id INTEGER PRIMARY KEY, sensor TEXT)");
+      await db.execute("INSERT Into Sensor (1,sensor1)");
+      await db.execute("INSERT Into Sensor (2,sensor2)");
+      await db.execute("INSERT Into Sensor (3,sensor3)");
     });
   }
 
@@ -43,11 +48,32 @@ class DBProvider {
     return raw;
   }
 
+  Future<void> insertSensor(SensorModel sensor) async {
+    final db = await database;
+    //get the biggest id in the table
+    var table = await db.rawQuery("SELECT MAX(id)+1 as id FROM Sensor");
+    int id = table.first["id"];
+    //insert to the table using the new id
+    var raw = await db.rawInsert(
+        "INSERT Into Sensor (id,sensor)"
+            " VALUES (?,?)",
+        [id, sensor.sensor]);
+    return raw;
+  }
+
   Future<List<LogModel>> getAllClients() async {
     final db = await database;
     var res = await db.query("Log");
     List<LogModel> list =
     res.isNotEmpty ? res.map((c) => LogModel.fromMap(c)).toList() : [];
+    return list;
+  }
+
+  Future<List<SensorModel>> getAllSensors() async {
+    final db = await database;
+    var res = await db.query("Sensor");
+    List<SensorModel> list =
+    res.isNotEmpty ? res.map((c) => SensorModel.fromMap(c)).toList() : [];
     return list;
   }
 
