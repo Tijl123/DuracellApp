@@ -83,20 +83,21 @@ void receive (List<String> arguments, BuildContext context) {
     });
   });
 
-  String msg = arguments.isEmpty ? "Hello World!": arguments[0];
-
-  String queueTag = "hello";
-
+  List<String> routingKeys = ["sensor1", "sensor2"];
   client
       .channel()
-      .then((Channel channel) => channel.queue(queueTag, durable: false))
-      .then((Queue queue) {
-    print(" [*] Waiting for messages in ${queueTag}. To Exit press CTRL+C");
-    return queue.consume(consumerTag: queueTag, noAck: true);
+      .then((Channel channel) {
+    return channel.exchange("hello_direct", ExchangeType.DIRECT, durable: false);
+  })
+      .then((Exchange exchange) {
+    print(" [*] Waiting for messages in logs. To Exit press CTRL+C");
+    return exchange.bindPrivateQueueConsumer(routingKeys,
+        consumerTag: "hello_direct", noAck: true
+    );
   })
       .then((Consumer consumer) {
     consumer.listen((AmqpMessage event) {
-      print(" [x] Received ${event.payloadAsString}");
+      print(" [x] ${event.routingKey}:'${event.payloadAsString}'");
       showAlertDialog(context, event.payloadAsString);
       var string = event.payloadAsString;
       var arr = string.split(";");
