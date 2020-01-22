@@ -68,7 +68,7 @@ class _HomeState extends State<Home> {
 
 void receive (List<String> arguments, BuildContext context) {
   final notifications = FlutterLocalNotificationsPlugin();
-  
+
   ConnectionSettings settings = new ConnectionSettings(
       host: "10.148.22.219"
   );
@@ -97,7 +97,11 @@ void receive (List<String> arguments, BuildContext context) {
     consumer.listen((AmqpMessage event) {
       print(" [x] Received ${event.payloadAsString}");
       showAlertDialog(context, event.payloadAsString);
-      showOngoingNotification(notifications, title: event.payloadAsString, body: event.payloadAsString);
+      var string = event.payloadAsString;
+      var arr = string.split(";");
+      print(string);
+      print(arr);
+      showOngoingNotification(notifications, title: arr[0], body: arr[1], id: int.parse(arr[1]));
     });
   });
 }
