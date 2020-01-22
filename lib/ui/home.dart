@@ -1,3 +1,4 @@
+import 'package:device_info/device_info.dart';
 import 'package:duracellapp/Database.dart';
 import 'package:duracellapp/LogModel.dart';
 import 'package:duracellapp/ui/log.dart';
@@ -8,6 +9,7 @@ import "dart:io";
 import "package:dart_amqp/dart_amqp.dart";
 import 'package:duracellapp/local_notification_helper.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'dart:async';
 
 
 class Home extends StatefulWidget {
@@ -62,7 +64,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void onTabTapped(int index) {
+  void onTabTapped(int index) async{
     setState(() {
       _currentIndex = index;
     });
@@ -91,9 +93,9 @@ void receive (List<String> arguments, BuildContext context) {
       .then((Channel channel) {
     return channel.exchange("hello_direct", ExchangeType.DIRECT, durable: false);
   })
-      .then((Exchange exchange) {
+      .then((Exchange exchange) async{
     print(" [*] Waiting for messages in logs. To Exit press CTRL+C");
-    return exchange.bindPrivateQueueConsumer(routingKeys,
+    return exchange.bindQueueConsumer(await _getId(context), routingKeys,
         consumerTag: "hello_direct", noAck: true
     );
   })
@@ -131,5 +133,16 @@ showAlertDialog(BuildContext context, String sensor, String waarde) {
       );
     },
   );
+}
+
+Future<String> _getId(BuildContext context) async {
+  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+  if (Theme.of(context).platform == TargetPlatform.iOS) {
+    IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
+    return iosDeviceInfo.identifierForVendor; // unique ID on iOS
+  } else {
+    AndroidDeviceInfo androidDeviceInfo = await deviceInfo.androidInfo;
+    return androidDeviceInfo.androidId; // unique ID on Android
+  }
 }
 

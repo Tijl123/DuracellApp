@@ -19,7 +19,7 @@ class _Log extends State<Log> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: FutureBuilder<List<LogModel>>(
-          future: DBProvider.db.getAllClients(),
+          future: DBProvider.db.getAllLogs(),
           builder: (BuildContext context, AsyncSnapshot<List<LogModel>> snapshot) {
             if (snapshot.hasData) {
               return ListView.builder(

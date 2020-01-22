@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:duracellapp/ui/home.dart';
 import 'package:flutter/material.dart';
 import 'package:workmanager/workmanager.dart';
@@ -12,13 +14,20 @@ void main() {
   );
   Workmanager.registerPeriodicTask(
     "1",
-    "syncWithTheBackEnd",
+    "checkWifi",
   );
 }
 
 void callbackDispatcher() {
-  Workmanager.executeTask((task, inputData) {
-    print("Native called background task"); //simpleTask will be emitted here.
+  Workmanager.executeTask((task, inputData) async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        print('connected');
+      }
+    } on SocketException catch (_) {
+      print('not connected');
+    }
     return Future.value(true);
   });
 }
