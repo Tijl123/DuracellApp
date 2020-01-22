@@ -60,8 +60,7 @@ class DBProvider {
         [id, sensor.sensor]);
     return raw;
   }
-
-  Future<List<LogModel>> getAllClients() async {
+  
   Future<List<LogModel>> getAllLogs() async {
     final db = await database;
     var res = await db.query("Log");
