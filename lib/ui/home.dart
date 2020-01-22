@@ -105,7 +105,6 @@ void receive (List<String> arguments, BuildContext context) {
       print(string);
       print(arr);
       showOngoingNotification(notifications, title: arr[0], body: arr[1], id: int.parse(arr[1]));
-      showOngoingNotification(notifications, title: event.payloadAsString, body: event.payloadAsString);
       addToLocalStorage(event.payloadAsString);
     });
   });
