@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Log extends StatefulWidget {
   @override
@@ -23,23 +22,14 @@ class _Log extends State<Log> {
       "50"
     ];
     final List<String> _waardes = prefs.getStringList('sensorwaardes');
+    _waardes.split(";");
 
-    if (_testwaardes != null) {
+    if (_waardes != null) {
       setState(() {
-        waardes = _testwaardes;
+        waardes = _waardes;
       });
       return;
     }
-  }
-
-  Future<Null> loginUser() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    waardes.add("nieuw");
-    prefs.setStringList('sensorwaardes', waardes);
-
-    setState(() {
-
-    });
   }
 
   @override
@@ -52,6 +42,7 @@ class _Log extends State<Log> {
         child: ListTile(
           title: Text("test"),
           subtitle: Text(waardes.elementAt(index)),
+          trailing: Text("22/01/2020"),
         ),
       );
     });
