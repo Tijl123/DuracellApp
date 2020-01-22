@@ -1,3 +1,5 @@
+import 'package:duracellapp/Database.dart';
+import 'package:duracellapp/LogModel.dart';
 import 'package:duracellapp/ui/log.dart';
 import 'package:duracellapp/ui/notification.dart';
 import 'package:duracellapp/ui/settings.dart';
@@ -103,6 +105,8 @@ void receive (List<String> arguments, BuildContext context) {
       var arr = string.split(";");
       print(string);
       print(arr);
+      LogModel log = new LogModel(id: null, sensor: arr[0], waarde: arr[1], datum: arr[2]);
+      DBProvider.db.insertLog(log);
       showOngoingNotification(notifications, title: arr[0], body: arr[1], id: int.parse(arr[1]));
     });
   });
@@ -128,3 +132,4 @@ showAlertDialog(BuildContext context, String waardes) {
     },
   );
 }
+

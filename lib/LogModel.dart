@@ -6,21 +6,21 @@ class LogModel {
 
   LogModel({this.id, this.sensor, this.waarde, this.datum});
 
+  factory LogModel.fromMap(Map<String, dynamic> json) => new LogModel(
+    id: json["id"],
+    sensor: json["sensor"],
+    waarde: json["waarde"],
+    datum: json["datum"]
+  );
+
   Map<String, dynamic> toMap() {
-    var map = <String, dynamic>{
+    return {
+      'id': id,
       'sensor': sensor,
       'waarde': waarde,
       'datum': datum
     };
-    if (id != null) {
-      map['id'] = id;
-    }
-    return map;
-  }
-
-  LogModel.fromMap(Map<String, dynamic> map) {
-    id = map['id'];
-    sensor = map['sensor'];
-    datum = map['datum'];
   }
 }
+
+

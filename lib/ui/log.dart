@@ -1,3 +1,5 @@
+import 'package:duracellapp/Database.dart';
+import 'package:duracellapp/LogModel.dart';
 import 'package:flutter/material.dart';
 
 class Log extends StatefulWidget {
@@ -6,8 +8,7 @@ class Log extends StatefulWidget {
 }
 
 class _Log extends State<Log> {
-
-  List<String> waardes = [];
+  
   @override
   void initState() {
     super.initState();
@@ -16,17 +17,27 @@ class _Log extends State<Log> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        itemCount: waardes.length,
-        itemBuilder: (BuildContext context, int index) {
-      return Card(
-        color: Colors.white,
-        child: ListTile(
-          title: Text("test"),
-          subtitle: Text(waardes.elementAt(index)),
-          trailing: Text("22/01/2020"),
-        ),
-      );
-    });
+    return FutureBuilder<List<LogModel>>(
+      future: DBProvider.db.getAllClients(),
+      builder: (BuildContext context, AsyncSnapshot<List<LogModel>> snapshot) {
+        if (snapshot.hasData) {
+          return ListView.builder(
+              itemCount: snapshot.data.length,
+              itemBuilder: (BuildContext context, int index) {
+                LogModel item = snapshot.data[index];
+                return Card(
+                  color: Colors.white,
+                  child: ListTile(
+                    title: Text(item.sensor),
+                    subtitle: Text(item.waarde),
+                    trailing: Text(item.datum),
+                  ),
+                );
+              });
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      },
+    );
   }
 }
