@@ -4,6 +4,8 @@ import 'package:duracellapp/ui/settings.dart';
 import 'package:flutter/material.dart';
 import "dart:io";
 import "package:dart_amqp/dart_amqp.dart";
+import 'package:duracellapp/local_notification_helper.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -65,6 +67,8 @@ class _HomeState extends State<Home> {
 }
 
 void receive (List<String> arguments, BuildContext context) {
+  final notifications = FlutterLocalNotificationsPlugin();
+  
   ConnectionSettings settings = new ConnectionSettings(
       host: "10.148.22.219"
   );
@@ -93,6 +97,7 @@ void receive (List<String> arguments, BuildContext context) {
     consumer.listen((AmqpMessage event) {
       print(" [x] Received ${event.payloadAsString}");
       showAlertDialog(context, event.payloadAsString);
+      showOngoingNotification(notifications, title: event.payloadAsString, body: event.payloadAsString);
     });
   });
 }

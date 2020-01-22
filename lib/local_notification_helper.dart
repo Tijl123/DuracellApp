@@ -29,8 +29,8 @@ NotificationDetails get _ongoing {
     'your channel description',
     importance: Importance.Max,
     priority: Priority.High,
-    ongoing: true,
-    autoCancel: false,
+    ongoing: false,
+    autoCancel: true,
   );
   final iOSChannelSpecifics = IOSNotificationDetails();
   return NotificationDetails(androidChannelSpecifics, iOSChannelSpecifics);
