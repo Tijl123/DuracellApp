@@ -59,7 +59,7 @@ class DBProvider {
 
   deleteAll() async {
     final db = await database;
-    db.rawDelete("Delete * from Log");
+    db.rawDelete("Delete from Log");
   }
 }
 

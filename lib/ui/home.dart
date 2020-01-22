@@ -100,11 +100,11 @@ void receive (List<String> arguments, BuildContext context) {
       .then((Consumer consumer) {
     consumer.listen((AmqpMessage event) {
       print(" [x] ${event.routingKey}:'${event.payloadAsString}'");
-      showAlertDialog(context, event.payloadAsString);
       var string = event.payloadAsString;
       var arr = string.split(";");
       print(string);
       print(arr);
+      showAlertDialog(context, arr[0], arr[1]);
       LogModel log = new LogModel(id: null, sensor: arr[0], waarde: arr[1], datum: arr[2]);
       DBProvider.db.insertLog(log);
       showOngoingNotification(notifications, title: arr[0], body: arr[1], id: int.parse(arr[1]));
@@ -112,14 +112,14 @@ void receive (List<String> arguments, BuildContext context) {
   });
 }
 
-showAlertDialog(BuildContext context, String waardes) {
+showAlertDialog(BuildContext context, String sensor, String waarde) {
 
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text("Notificatie"),
-        content: Text("De sensor heeft waarde " + waardes),
+        title: Text("Notificatie voor " + sensor),
+        content: Text(sensor + " heeft een waarde van " + waarde),
         actions: [
           FlatButton(
             child: Text("OK"),
