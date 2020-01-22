@@ -43,7 +43,7 @@ class DBProvider {
     return raw;
   }
 
-  Future<List<LogModel>> getAllClients() async {
+  Future<List<LogModel>> getAllLogs() async {
     final db = await database;
     var res = await db.query("Log");
     List<LogModel> list =
@@ -52,7 +52,7 @@ class DBProvider {
   }
 
   // A method that retrieves all the dogs from the dogs table.
-  deleteClient(int id) async {
+  deleteLog(int id) async {
     final db = await database;
     return db.delete("Log", where: "id = ?", whereArgs: [id]);
   }
