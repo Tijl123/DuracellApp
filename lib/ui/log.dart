@@ -1,41 +1,59 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Log extends StatelessWidget {
+class Log extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          RaisedButton(
-            child: Text('Show alert'),
-            onPressed: () {
-              showAlertDialog(context);
-            },
-          ),
-        ],
-      ),
-    );
-  }
+  _Log createState() => _Log();
 }
 
-showAlertDialog(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text("Notificatie"),
-        content: Text("Sensor overflow"),
-        actions: [
-          FlatButton(
-            child: Text("OK"),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
+class _Log extends State<Log> {
+
+  List<String> waardes = [];
+  @override
+  void initState() {
+    super.initState();
+    vulLijst();
+  }
+
+  void vulLijst() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final List<String> _testwaardes = [
+      "12",
+      "25",
+      "50"
+    ];
+    final List<String> _waardes = prefs.getStringList('sensorwaardes');
+
+    if (_testwaardes != null) {
+      setState(() {
+        waardes = _testwaardes;
+      });
+      return;
+    }
+  }
+
+  Future<Null> loginUser() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    waardes.add("nieuw");
+    prefs.setStringList('sensorwaardes', waardes);
+
+    setState(() {
+
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+        itemCount: waardes.length,
+        itemBuilder: (BuildContext context, int index) {
+      return Card(
+        color: Colors.white,
+        child: ListTile(
+          title: Text("test"),
+          subtitle: Text(waardes.elementAt(index)),
+        ),
       );
-    },
-  );
+    });
+  }
 }

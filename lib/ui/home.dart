@@ -40,6 +40,7 @@ class _HomeState extends State<Home> {
         centerTitle: true,
         backgroundColor: Colors.amberAccent.shade700,
       ),
+      backgroundColor: Colors.amberAccent.shade200,
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTabTapped,
