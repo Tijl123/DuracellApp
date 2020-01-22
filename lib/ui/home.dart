@@ -6,8 +6,6 @@ import "dart:io";
 import "package:dart_amqp/dart_amqp.dart";
 import 'package:duracellapp/local_notification_helper.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 
 
 class Home extends StatefulWidget {
@@ -105,7 +103,6 @@ void receive (List<String> arguments, BuildContext context) {
       print(string);
       print(arr);
       showOngoingNotification(notifications, title: arr[0], body: arr[1], id: int.parse(arr[1]));
-      addToLocalStorage(event.payloadAsString);
     });
   });
 }
@@ -129,26 +126,4 @@ showAlertDialog(BuildContext context, String waardes) {
       );
     },
   );
-}
-
-final Future<Database> database = openDatabase(
-    // Set the path to the database.
-    join(await getDatabasesPath(), 'log_database.db'),
-    // When the database is first created, create a table to store dogs.
-    onCreate: (db, version) {
-      // Run the CREATE TABLE statement on the database.
-      return db.execute(
-      "CREATE TABLE logs(id INTEGER PRIMARY KEY, sensor TEXT, waarde TEXT, datum TEXT)",
-      );
-    },
-    // Set the version. This executes the onCreate function and provides a
-    // path to perform database upgrades and downgrades.
-    version: 1,
-);
-
-Future<Null> addToLocalStorage(String waarde) async {
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-  List<String> waardes = prefs.getStringList('sensorwaardes');
-  waardes.add(waarde);
-  prefs.setStringList('sensorwaardes', waardes);
 }

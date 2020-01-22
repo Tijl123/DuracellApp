@@ -11,26 +11,8 @@ class _Log extends State<Log> {
   @override
   void initState() {
     super.initState();
-    vulLijst();
   }
 
-  void vulLijst() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final List<String> _testwaardes = [
-      "12",
-      "25",
-      "50"
-    ];
-    final List<String> _waardes = prefs.getStringList('sensorwaardes');
-    _waardes.split(";");
-
-    if (_waardes != null) {
-      setState(() {
-        waardes = _waardes;
-      });
-      return;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,47 +1,57 @@
-import 'package:duracellapp/LogModel.dart';
+import 'dart:io';
+
+import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-class LogProvider {
-  Database db;
+Database db;
 
-  Future open(String path) async {
-    db = await openDatabase(path, version: 1,
-        onCreate: (Database db, int version) async {
-          await db.execute('''
-          create table log ( 
+class DatabaseCreator {
+
+  static void databaseLog(String functionName, String sql,
+      [List<Map<String, dynamic>> selectQueryResult, int insertAndUpdateQueryResult, List<dynamic> params]) {
+    print(functionName);
+    print(sql);
+    if (params != null) {
+      print(params);
+    }
+    if (selectQueryResult != null) {
+      print(selectQueryResult);
+    } else if (insertAndUpdateQueryResult != null) {
+      print(insertAndUpdateQueryResult);
+    }
+  }
+
+  Future<void> createLogTable(Database db) async {
+    final logSql = '''          
+            create table log ( 
             id integer primary key autoincrement, 
             sensor text not null,
             waarde text not null,
-            datum text not null)
-          ''');
-    });
+            datum text not null)''';
+
+    await db.execute(logSql);
   }
 
-  Future<LogModel> insert(LogModel logModel) async {
-    logModel.id = await db.insert('log', logModel.toMap());
-    return logModel;
+  Future<String> getDatabasePath(String dbName) async {
+    final databasePath = await getDatabasesPath();
+    final path = join(databasePath, dbName);
+
+    //make sure the folder exists
+    if (await Directory(dirname(path)).exists()) {
+      //await deleteDatabase(path);
+    } else {
+      await Directory(dirname(path)).create(recursive: true);
+    }
+    return path;
   }
 
-  Future<int> delete(int id) async {
-    return await db.delete('log', where: 'id = ?', whereArgs: [id]);
+  Future<void> initDatabase() async {
+    final path = await getDatabasePath('log_db');
+    db = await openDatabase(path, version: 1, onCreate: onCreate);
+    print(db);
   }
 
-  Future<List<LogModel>> getAll() async {
-
-    // Query the table for all The Dogs.
-    final List<Map<String, dynamic>> maps = await db.query('log');
-
-    // Convert the List<Map<String, dynamic> into a List<Dog>.
-    return List.generate(maps.length, (i) {
-      return LogModel(
-        id: maps[i]['id'],
-        sensor: maps[i]['sensor'],
-        waarde: maps[i]['waarde'],
-        datum: maps[i]['datum'],
-      );
-    });
+  Future<void> onCreate(Database db, int version) async {
+    await createLogTable(db);
   }
-
-
-  Future close() async => db.close();
 }
