@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:dart_amqp/dart_amqp.dart';
+import 'package:device_info/device_info.dart';
 import 'package:duracellapp/Database.dart';
 import 'package:duracellapp/SensorModel.dart';
 import 'package:flutter/material.dart';
@@ -46,9 +47,9 @@ class _Settings extends State<Settings> {
                             }else{
                               item.isSubscribed = 0;
                               print(item.isSubscribed.toString() + "is 0");
+                              resetConnection(context, item.sensor);
                             }
                             DBProvider.db.updateSensor(item);
-                            resetConnection();
                             receive(new List<String>(), context);
                           });},
                           title: Text(item.sensor),
@@ -71,15 +72,32 @@ class _Settings extends State<Settings> {
   }
 }
 
-void resetConnection(){
+void resetConnection(BuildContext context, String unsub){
   ConnectionSettings settings = new ConnectionSettings(
       host: "10.148.22.219"
   );
-
+  print("unsub");
   Client client = new Client(settings: settings);
-
-  print('test');
-  client.close().then((_) {
-    print("close client");
-  });
+  Exchange exchange;
+  client.channel()
+      .then((Channel channel) async {
+        channel.queue(await _getId(context));
+        exchange = await channel.exchange('hello_direct', ExchangeType.DIRECT, durable: false);
+      })
+      .then((Queue queue) {
+        return queue.unbind(exchange, unsub);
+      });
 }
+
+Future<String> _getId(BuildContext context) async {
+  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+  if (Theme.of(context).platform == TargetPlatform.iOS) {
+    IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
+    return iosDeviceInfo.identifierForVendor; // unique ID on iOS
+  } else {
+    AndroidDeviceInfo androidDeviceInfo = await deviceInfo.androidInfo;
+    return androidDeviceInfo.androidId; // unique ID on Android
+  }
+}
+
+
