@@ -1,60 +1,44 @@
+import 'package:duracellapp/Database.dart';
+import 'package:duracellapp/SensorModel.dart';
 import 'package:flutter/material.dart';
 
 class Settings extends StatefulWidget {
   @override
-  _State createState() => new _State();
-
+  _Settings createState() => _Settings();
 }
 
-class _State extends State<Settings> {
+class _Settings extends State<Settings> {
 
   @override
   void initState() {
     super.initState();
+    var list = DBProvider.db.getAllSensors();
+    print(list);
   }
 
-  bool _value1 = false;
-  bool _value2 = false;
-
-  void _onChanged1(bool value){
-    setState(() {
-      _value1 = value;
-    });
-
-  }
-
-  void _onChanged2(bool value){
-    setState(() {
-      _value2 = value;
-    });
-
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: new EdgeInsets.all(32.0),
-      child: new Column(
-        children: <Widget>[
-          new SwitchListTile(
-              title: new Text("sensor1"),
-              activeColor: Colors.red,
-              secondary: const Icon(Icons.adb),
-              value: _value1,
-              onChanged: (bool value){_onChanged1(value);}),
-          new SwitchListTile(
-            title: new Text("sensor2"),
-              activeColor: Colors.red,
-              secondary: const Icon(Icons.adb),
-              value: _value2,
-              onChanged: (bool value){_onChanged2(value);}),
-          new SwitchListTile(
-              title: new Text("sensor3"),
-              activeColor: Colors.red,
-              secondary: const Icon(Icons.adb),
-              value: _value2,
-              onChanged: (bool value){_onChanged2(value);})
-        ],
+    return Scaffold(
+      body: FutureBuilder<List<SensorModel>>(
+        future: DBProvider.db.getAllSensors(),
+        builder: (BuildContext context, AsyncSnapshot<List<SensorModel>> snapshot) {
+          if (snapshot.hasData) {
+            return ListView.builder(
+                itemCount: snapshot.data.length,
+                itemBuilder: (BuildContext context, int index) {
+                  SensorModel item = snapshot.data[index];
+                  return Card(
+                    color: Colors.white,
+                    child: ListTile(
+                      title: Text(item.sensor),
+                    ),
+                  );
+                });
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        },
       ),
     );
   }

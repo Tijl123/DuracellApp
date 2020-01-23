@@ -29,9 +29,9 @@ class DBProvider {
     }, onCreate: (Database db, int version) async {
       await db.execute("CREATE TABLE Log(id INTEGER PRIMARY KEY, sensor TEXT, waarde TEXT, datum TEXT)");
       await db.execute("CREATE TABLE Sensor(id INTEGER PRIMARY KEY, sensor TEXT)");
-      await db.execute("INSERT Into Sensor (1,sensor1)");
-      await db.execute("INSERT Into Sensor (2,sensor2)");
-      await db.execute("INSERT Into Sensor (3,sensor3)");
+      await db.rawInsert("INSERT Into Sensor (id,sensor) VALUES (1,'sensor1')");
+      await db.rawInsert("INSERT Into Sensor (id,sensor) VALUES (2,'sensor2')");
+      await db.rawInsert("INSERT Into Sensor (id,sensor) VALUES (3,'sensor3')");
     });
   }
 
@@ -60,7 +60,7 @@ class DBProvider {
         [id, sensor.sensor]);
     return raw;
   }
-  
+
   Future<List<LogModel>> getAllLogs() async {
     final db = await database;
     var res = await db.query("Log");
