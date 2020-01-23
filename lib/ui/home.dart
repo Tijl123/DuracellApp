@@ -95,8 +95,7 @@ void receive (List<String> arguments, BuildContext context) async {
     }
   }
   print(routingKeys);
-  //Future.forEach(sensoren, functionThatReturnsAFuture)
-  //    .then((response) => print('All files processed'));
+
   client
       .channel()
       .then((Channel channel) {

@@ -57,7 +57,7 @@ class DBProvider {
     var raw = await db.rawInsert(
         "INSERT Into Sensor (id,sensor, isSubscribed)"
             " VALUES (?,?,?)",
-        [id, sensor.sensor, sensor]);
+        [id, sensor.sensor, sensor.isSubscribed]);
     return raw;
   }
 
