@@ -1,6 +1,7 @@
 import 'package:device_info/device_info.dart';
 import 'package:duracellapp/Database.dart';
 import 'package:duracellapp/LogModel.dart';
+import 'package:duracellapp/SensorModel.dart';
 import 'package:duracellapp/ui/log.dart';
 import 'package:duracellapp/ui/notification.dart';
 import 'package:duracellapp/ui/settings.dart';
@@ -86,7 +87,7 @@ void receive (List<String> arguments, BuildContext context) {
       exit(0);
     });
   });
-
+  Future<List<SensorModel>> sensoren = DBProvider.db.getAllSensors();
   List<String> routingKeys = ["sensor1", "sensor2"];
   client
       .channel()

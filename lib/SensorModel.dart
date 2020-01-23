@@ -1,18 +1,21 @@
 class SensorModel {
   int id;
   String sensor;
+  int isSubscribed;
 
-  SensorModel({this.id, this.sensor});
+  SensorModel({this.id, this.sensor, this.isSubscribed});
 
   factory SensorModel.fromMap(Map<String, dynamic> json) => new SensorModel(
       id: json["id"],
-      sensor: json["sensor"]
+      sensor: json["sensor"],
+      isSubscribed: json["isSubscribed"]
   );
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'sensor': sensor
+      'sensor': sensor,
+      'isSubscribed': isSubscribed
     };
   }
 }

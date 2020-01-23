@@ -28,10 +28,10 @@ class DBProvider {
     return await openDatabase(path, version: 1, onOpen: (db) {
     }, onCreate: (Database db, int version) async {
       await db.execute("CREATE TABLE Log(id INTEGER PRIMARY KEY, sensor TEXT, waarde TEXT, datum TEXT)");
-      await db.execute("CREATE TABLE Sensor(id INTEGER PRIMARY KEY, sensor TEXT)");
-      await db.rawInsert("INSERT Into Sensor (id,sensor) VALUES (1,'sensor1')");
-      await db.rawInsert("INSERT Into Sensor (id,sensor) VALUES (2,'sensor2')");
-      await db.rawInsert("INSERT Into Sensor (id,sensor) VALUES (3,'sensor3')");
+      await db.execute("CREATE TABLE Sensor(id INTEGER PRIMARY KEY, sensor TEXT, isSubscribed INTEGER)");
+      await db.rawInsert("INSERT Into Sensor (id,sensor, isSubscribed) VALUES (1,'sensor1', 1)");
+      await db.rawInsert("INSERT Into Sensor (id,sensor, isSubscribed) VALUES (2,'sensor2', 1)");
+      await db.rawInsert("INSERT Into Sensor (id,sensor, isSubscribed) VALUES (3,'sensor3', 0)");
     });
   }
 
@@ -55,10 +55,18 @@ class DBProvider {
     int id = table.first["id"];
     //insert to the table using the new id
     var raw = await db.rawInsert(
-        "INSERT Into Sensor (id,sensor)"
-            " VALUES (?,?)",
-        [id, sensor.sensor]);
+        "INSERT Into Sensor (id,sensor, isSubscribed)"
+            " VALUES (?,?,?)",
+        [id, sensor.sensor, sensor]);
     return raw;
+  }
+
+  updateSensor(SensorModel sensor) async {
+    print('werkt!');
+    final db = await database;
+    var res = await db.update("Sensor", sensor.toMap(),
+        where: "id = ?", whereArgs: [sensor.id]);
+    return res;
   }
 
   Future<List<LogModel>> getAllLogs() async {
