@@ -31,7 +31,6 @@ class _Settings extends State<Settings> {
         builder: (BuildContext context, AsyncSnapshot<List<SensorModel>> snapshot) {
           if (snapshot.hasData) {
             return Center(
-              children: TextField()
               child: ListView.separated(
                   itemCount: snapshot.data.length,
                   itemBuilder: (context, int index) {
