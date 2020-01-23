@@ -1,6 +1,9 @@
+import 'package:dart_amqp/dart_amqp.dart';
 import 'package:duracellapp/Database.dart';
 import 'package:duracellapp/SensorModel.dart';
 import 'package:flutter/material.dart';
+
+import 'home.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -12,8 +15,6 @@ class _Settings extends State<Settings> {
   @override
   void initState() {
     super.initState();
-    var list = DBProvider.db.getAllSensors();
-    print(list);
   }
 
   bool _sensor = false;
@@ -45,6 +46,8 @@ class _Settings extends State<Settings> {
                               print(item.isSubscribed.toString() + "is 0");
                             }
                             DBProvider.db.updateSensor(item);
+                            resetConnection();
+                            receive(new List<String>(), context);
                           });},
                           title: Text(item.sensor),
                           subtitle: Text(item.isSubscribed.toString()),
@@ -64,4 +67,17 @@ class _Settings extends State<Settings> {
       ),
     );
   }
+}
+
+void resetConnection(){
+  ConnectionSettings settings = new ConnectionSettings(
+      host: "10.148.22.219"
+  );
+
+  Client client = new Client(settings: settings);
+
+  print('test');
+  client.close().then((_) {
+    print("close client");
+  });
 }

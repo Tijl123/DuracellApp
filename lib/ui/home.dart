@@ -46,7 +46,7 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: Text("Ometa"),
         centerTitle: true,
-        backgroundColor: Colors.amberAccent.shade700,
+        backgroundColor: Colors.brown.shade600,
       ),
       backgroundColor: Colors.amberAccent.shade200,
       body: _children[_currentIndex],
@@ -72,7 +72,7 @@ class _HomeState extends State<Home> {
   }
 }
 
-void receive (List<String> arguments, BuildContext context) {
+void receive (List<String> arguments, BuildContext context) async {
   final notifications = FlutterLocalNotificationsPlugin();
 
   ConnectionSettings settings = new ConnectionSettings(
@@ -87,8 +87,16 @@ void receive (List<String> arguments, BuildContext context) {
       exit(0);
     });
   });
-  Future<List<SensorModel>> sensoren = DBProvider.db.getAllSensors();
-  List<String> routingKeys = ["sensor1", "sensor2"];
+  List<String> routingKeys = [];
+  List<SensorModel> sensoren = await DBProvider.db.getAllSensors();
+  for (var i=0; i<sensoren.length; i++) {
+    if(sensoren[i].isSubscribed == 1){
+      routingKeys.add(sensoren[i].sensor);
+    }
+  }
+  print(routingKeys);
+  //Future.forEach(sensoren, functionThatReturnsAFuture)
+  //    .then((response) => print('All files processed'));
   client
       .channel()
       .then((Channel channel) {
