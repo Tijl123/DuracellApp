@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:duracellapp/local_notification_helper.dart';
 import 'package:duracellapp/ui/home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:workmanager/workmanager.dart';
 
 void main() {
@@ -10,7 +12,6 @@ void main() {
   ));
   Workmanager.initialize(
       callbackDispatcher, // The top level function, aka callbackDispatcher
-      isInDebugMode: true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
   );
   Workmanager.registerPeriodicTask(
     "1",
@@ -26,6 +27,8 @@ void callbackDispatcher() {
         print('connected');
       }
     } on SocketException catch (_) {
+      final notifications = FlutterLocalNotificationsPlugin();
+      showOngoingNotification(notifications, title: 'Geen Wifi', body: 'Er kunnen geen notificaties ontvangen worden.');
       print('not connected');
     }
     return Future.value(true);
