@@ -79,15 +79,16 @@ void resetConnection(BuildContext context, String unsub){
   );
   print("unsub");
   Client client = new Client(settings: settings);
-  Exchange exchange;
   client.channel()
       .then((Channel channel) async {
         channel.queue(await _getId(context));
-        exchange = await channel.exchange('hello_direct', ExchangeType.DIRECT, durable: false);
+        return channel.exchange("hello_direct", ExchangeType.DIRECT, durable: false);
       })
-      .then((Queue queue) {
-        return queue.unbind(exchange, unsub);
-      });
+      .then((Exchange exchange) async{
+        exchange.channel.queue(await _getId(context)) .then((Queue queue) {
+          return queue.unbind(exchange, unsub);
+        });
+  });
 }
 
 Future<String> _getId(BuildContext context) async {
