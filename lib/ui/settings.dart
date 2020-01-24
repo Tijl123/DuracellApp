@@ -74,14 +74,16 @@ class _Settings extends State<Settings> {
 
 void resetConnection(BuildContext context, String unsub){
   ConnectionSettings settings = new ConnectionSettings(
-      host: "10.148.22.219"
+      host: "192.168.1.2",
+      virtualHost: "team1vhost",
+      authProvider: const PlainAuthenticator("team1", "team1")
   );
   print("unsub");
   Client client = new Client(settings: settings);
   client.channel()
       .then((Channel channel) async {
         channel.queue(await _getId(context));
-        return channel.exchange("hello_direct", ExchangeType.DIRECT, durable: false);
+        return channel.exchange("C1direct", ExchangeType.DIRECT, durable: false);
       })
       .then((Exchange exchange) async{
         exchange.channel.queue(await _getId(context)) .then((Queue queue) {

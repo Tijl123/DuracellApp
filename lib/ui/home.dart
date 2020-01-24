@@ -76,7 +76,9 @@ void receive (List<String> arguments, BuildContext context) async {
   final notifications = FlutterLocalNotificationsPlugin();
 
   ConnectionSettings settings = new ConnectionSettings(
-      host: "10.148.22.219"
+      host: "192.168.1.2",
+      virtualHost: "team1vhost",
+      authProvider: const PlainAuthenticator("team1", "team1")
   );
 
   Client client = new Client(settings: settings);
@@ -99,12 +101,12 @@ void receive (List<String> arguments, BuildContext context) async {
   client
       .channel()
       .then((Channel channel) {
-    return channel.exchange("hello_direct", ExchangeType.DIRECT, durable: false);
+    return channel.exchange("C1direct", ExchangeType.DIRECT, durable: false);
   })
       .then((Exchange exchange) async{
     print(" [*] Waiting for messages in logs. To Exit press CTRL+C");
     return exchange.bindQueueConsumer(await _getId(context), routingKeys,
-        consumerTag: "hello_direct", noAck: true
+        consumerTag: "C1direct", noAck: true
     );
   })
       .then((Consumer consumer) {
