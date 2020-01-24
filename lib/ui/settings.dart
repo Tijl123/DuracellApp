@@ -25,6 +25,11 @@ class _Settings extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Settings"),
+        centerTitle: true,
+        backgroundColor: Colors.brown.shade600,
+      ),
       body:
       FutureBuilder<List<SensorModel>>(
         future: DBProvider.db.getAllSensors(),
@@ -83,7 +88,7 @@ void resetConnection(BuildContext context, String unsub){
   client.channel()
       .then((Channel channel) async {
         channel.queue(await _getId(context));
-        return channel.exchange("C1direct", ExchangeType.DIRECT, durable: false);
+        return channel.exchange("C1direct", ExchangeType.DIRECT, durable: true);
       })
       .then((Exchange exchange) async{
         exchange.channel.queue(await _getId(context)) .then((Queue queue) {

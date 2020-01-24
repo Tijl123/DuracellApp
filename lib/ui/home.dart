@@ -43,12 +43,6 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Ometa"),
-        centerTitle: true,
-        backgroundColor: Colors.brown.shade600,
-      ),
-      backgroundColor: Colors.amberAccent.shade200,
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTabTapped,
@@ -58,8 +52,6 @@ class _HomeState extends State<Home> {
               icon: Icon(Icons.access_time), title: Text("Log")),
           BottomNavigationBarItem(
               icon: Icon(Icons.settings), title: Text("Settings")),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.add_location), title: Text("LocalNotificationWidget")),
         ],
       ),
     );
@@ -101,7 +93,7 @@ void receive (List<String> arguments, BuildContext context) async {
   client
       .channel()
       .then((Channel channel) {
-    return channel.exchange("C1direct", ExchangeType.DIRECT, durable: false);
+    return channel.exchange("C1direct", ExchangeType.DIRECT, durable: true);
   })
       .then((Exchange exchange) async{
     print(" [*] Waiting for messages in logs. To Exit press CTRL+C");

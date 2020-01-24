@@ -18,6 +18,11 @@ class _Log extends State<Log> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Log"),
+        centerTitle: true,
+        backgroundColor: Colors.brown.shade600,
+      ),
         body: FutureBuilder<List<LogModel>>(
           future: DBProvider.db.getAllLogs(),
           builder: (BuildContext context, AsyncSnapshot<List<LogModel>> snapshot) {
