@@ -33,10 +33,17 @@ class _Log extends State<Log> {
                     LogModel item = snapshot.data[index];
                     return Card(
                       color: Colors.white,
-                      child: ListTile(
-                        title: Text(item.sensor),
-                        subtitle: Text(item.waarde),
-                        trailing: Text(item.datum),
+                      child: Dismissible(
+                        key: UniqueKey(),
+                        background: Container(color: Colors.red),
+                        onDismissed: (direction) {
+                          DBProvider.db.deleteLog(item.id);
+                         },
+                        child: ListTile(
+                          title: Text(item.sensor),
+                          subtitle: Text(item.waarde),
+                          trailing: Text(item.datum),
+                        ),
                       ),
                     );
                   });
