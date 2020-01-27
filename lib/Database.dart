@@ -62,7 +62,6 @@ class DBProvider {
   }
 
   updateSensor(SensorModel sensor) async {
-    print('werkt!');
     final db = await database;
     var res = await db.update("Sensor", sensor.toMap(),
         where: "id = ?", whereArgs: [sensor.id]);

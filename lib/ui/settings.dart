@@ -48,10 +48,8 @@ class _Settings extends State<Settings> {
                           onChanged: (bool value) { setState(() {
                             if(value == true){
                               item.isSubscribed = 1;
-                              print(item.isSubscribed.toString() + "is 1");
                             }else{
                               item.isSubscribed = 0;
-                              print(item.isSubscribed.toString() + "is 0");
                               resetConnection(context, item.sensor);
                             }
                             DBProvider.db.updateSensor(item);
@@ -82,7 +80,6 @@ void resetConnection(BuildContext context, String unsub){
       virtualHost: "team1vhost",
       authProvider: const PlainAuthenticator("team1", "team1")
   );
-  print("unsub");
   Client client = new Client(settings: settings);
   client.channel()
       .then((Channel channel) async {

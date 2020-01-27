@@ -106,7 +106,6 @@ void receive (List<String> arguments, BuildContext context) async {
       print(" [x] ${event.routingKey}:'${event.payloadAsString}'");
       var string = event.payloadAsString;
       var arr = string.split(";");
-      print(string);
       print(arr);
       showAlertDialog(context, arr[0], arr[1]);
       LogModel log = new LogModel(id: null, sensor: arr[0], waarde: arr[1], datum: arr[2]);
