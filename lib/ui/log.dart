@@ -35,10 +35,58 @@ class _Log extends State<Log> {
                       color: Colors.white,
                       child: Dismissible(
                         key: UniqueKey(),
-                        background: Container(color: Colors.red),
-                        onDismissed: (direction) {
-                          DBProvider.db.deleteLog(item.id);
-                         },
+                        direction: DismissDirection.endToStart,
+                        confirmDismiss: (direction) async {
+                            final bool res = await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    content: Text("Wilt u deze log verwijderen?"),
+                                    actions: <Widget>[
+                                      FlatButton(
+                                        child: Text(
+                                          "Annuleren",
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                      FlatButton(
+                                        child: Text(
+                                          "Verwijderen",
+                                          style: TextStyle(color: Colors.red),
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            DBProvider.db.deleteLog(item.id);
+                                          });
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                });
+                            return res;
+                      },
+                        background: Container(
+                          color: Colors.red,
+                          child: Align(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: <Widget>[
+                                Icon(
+                                  Icons.delete,
+                                  color: Colors.white,
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                              ],
+                            ),
+                            alignment: Alignment.centerRight,
+                          ),
+                        ),
                         child: ListTile(
                           title: Text(item.sensor),
                           subtitle: Text(item.waarde),
