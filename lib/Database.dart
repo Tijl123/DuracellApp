@@ -77,6 +77,14 @@ class DBProvider {
     return list;
   }
 
+  Future<List<LogModel>> getLogsWhereSensor(String sensor) async {
+    final db = await database;
+    var res = await db.rawQuery('SELECT * FROM Log WHERE sensor = ' + sensor);
+    List<LogModel> list =
+    res.isNotEmpty ? res.map((c) => LogModel.fromMap(c)).toList() : [];
+    return list;
+  }
+
   Future<List<SensorModel>> getAllSensors() async {
     final db = await database;
     var res = await db.query("Sensor");

@@ -30,7 +30,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return new SplashScreen(
-        seconds: 6,
+        seconds: 3,
         navigateAfterSeconds: new AfterSplash(),
         title: new Text('Welkom!',
           style: new TextStyle(
@@ -42,7 +42,6 @@ class _MyAppState extends State<MyApp> {
         backgroundColor: Colors.black,
         styleTextUnderTheLoader: new TextStyle(),
         photoSize: 100.0,
-        onClick: ()=>print("Flutter Egypt"),
         loaderColor: Colors.white
     );
   }

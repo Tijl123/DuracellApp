@@ -58,7 +58,6 @@ class _Settings extends State<Settings> {
                             receive(new List<String>(), context);
                           });},
                           title: Text(item.sensor),
-                          subtitle: Text(item.isSubscribed.toString()),
                         ),
                       ),
                     );
