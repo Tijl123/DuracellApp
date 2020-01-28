@@ -43,7 +43,7 @@ class DBProvider {
     //insert to the table using the new id
     var raw = await db.rawInsert(
         "INSERT Into Log (id,sensor,waarde,datum,isChecked)"
-            " VALUES (?,?,?,?, ?)",
+            " VALUES (?,?,?,?,?)",
         [id, log.sensor, log.waarde, log.datum]);
     return raw;
   }
@@ -78,7 +78,9 @@ class DBProvider {
 
   Future<List<LogModel>> getLogsWhereSensor(String sensor) async {
     final db = await database;
-    var res = await db.rawQuery('SELECT * FROM Log WHERE sensor = ' + sensor);
+    //var res = await db.query("Log", where: "sensor = ?", whereArgs: [sensor]);
+    var res = await db.rawQuery('SELECT * FROM Log WHERE sensor = ?', ['sensor1']);
+    print(res);
     List<LogModel> list =
     res.isNotEmpty ? res.map((c) => LogModel.fromMap(c)).toList() : [];
     return list;

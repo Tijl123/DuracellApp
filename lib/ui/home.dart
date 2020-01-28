@@ -111,7 +111,7 @@ void receive (List<String> arguments, BuildContext context) async {
       var string = event.payloadAsString;
       var arr = string.split(";");
       print(arr);
-      showAlertDialog(context, arr[0], arr[1]);
+      showAlertDialog(context, arr[0], arr[1], arr[2]);
       LogModel log = new LogModel(id: null, sensor: arr[0], waarde: arr[1], datum: arr[2], isChecked: 0);
       DBProvider.db.insertLog(log);
       showOngoingNotification(notifications, title: "Sensor: " + arr[0], body: "Waarde: " + arr[1], id: int.parse(arr[1]));
@@ -120,7 +120,7 @@ void receive (List<String> arguments, BuildContext context) async {
   });
 }
 
-showAlertDialog(BuildContext context, String sensor, String waarde) {
+showAlertDialog(BuildContext context, String sensor, String waarde, String datum) {
 
   showDialog(
     context: context,
@@ -132,7 +132,7 @@ showAlertDialog(BuildContext context, String sensor, String waarde) {
           FlatButton(
             child: Text("OK"),
             onPressed: () {
-              sent(new List<String>(), sensor);
+              sent(new List<String>(), sensor, datum, waarde);
               Navigator.of(context).pop();
             },
           ),
@@ -153,7 +153,7 @@ Future<String> _getId(BuildContext context) async {
   }
 }
 
-void sent (List<String> arguments, String sensor) {
+void sent (List<String> arguments, String sensor, String datum, String waarde) {
   ConnectionSettings settings = new ConnectionSettings(
       host: "192.168.1.2",
       virtualHost: "team1vhost",
@@ -163,15 +163,15 @@ void sent (List<String> arguments, String sensor) {
   Client client = new Client(settings: settings);
 
   String consumeTag = "C1direct";
-
+  String msg = sensor + ";" + waarde + ";" + datum + ";confirmed";
   client
       .channel()
       .then((Channel channel) {
     return channel.queue(consumeTag, durable: true);
   })
       .then((Queue queue) {
-    queue.publish(sensor);
-    print(" [x] Sent ${sensor}");
+    queue.publish(msg);
+    print(" [x] Sent ${msg}");
     client.close();
   });
 }
