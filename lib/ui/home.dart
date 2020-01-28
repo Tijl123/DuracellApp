@@ -3,7 +3,6 @@ import 'package:duracellapp/Database.dart';
 import 'package:duracellapp/LogModel.dart';
 import 'package:duracellapp/SensorModel.dart';
 import 'package:duracellapp/ui/log.dart';
-import 'package:duracellapp/ui/notification.dart';
 import 'package:duracellapp/ui/settings.dart';
 import 'package:flutter/material.dart';
 import "dart:io";
