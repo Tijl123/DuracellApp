@@ -27,7 +27,7 @@ class DBProvider {
     String path = join(documentsDirectory.path, "LogDB.db");
     return await openDatabase(path, version: 1, onOpen: (db) {
     }, onCreate: (Database db, int version) async {
-      await db.execute("CREATE TABLE Log(id INTEGER PRIMARY KEY, sensor TEXT, waarde TEXT, datum TEXT)");
+      await db.execute("CREATE TABLE Log(id INTEGER PRIMARY KEY, sensor TEXT, waarde TEXT, datum TEXT, isChecked INTEGER)");
       await db.execute("CREATE TABLE Sensor(id INTEGER PRIMARY KEY, sensor TEXT, isSubscribed INTEGER)");
       await db.rawInsert("INSERT Into Sensor (id,sensor, isSubscribed) VALUES (1,'sensor1', 1)");
       await db.rawInsert("INSERT Into Sensor (id,sensor, isSubscribed) VALUES (2,'sensor2', 1)");
@@ -42,8 +42,8 @@ class DBProvider {
     int id = table.first["id"];
     //insert to the table using the new id
     var raw = await db.rawInsert(
-        "INSERT Into Log (id,sensor,waarde,datum)"
-            " VALUES (?,?,?,?)",
+        "INSERT Into Log (id,sensor,waarde,datum, isChecked)"
+            " VALUES (?,?,?,?, ?)",
         [id, log.sensor, log.waarde, log.datum]);
     return raw;
   }
