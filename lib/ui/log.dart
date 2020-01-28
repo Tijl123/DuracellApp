@@ -24,7 +24,7 @@ class _Log extends State<Log> {
         backgroundColor: Colors.brown.shade600,
       ),
         body: FutureBuilder<List<LogModel>>(
-          future: DBProvider.db.getLogsWhereSensor("sensor1"),
+          future: DBProvider.db.getAllLogs(),
           builder: (BuildContext context, AsyncSnapshot<List<LogModel>> snapshot) {
             if (snapshot.hasData) {
               return ListView.builder(

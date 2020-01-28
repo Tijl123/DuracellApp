@@ -12,6 +12,7 @@ import 'package:duracellapp/local_notification_helper.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:async';
 
+final notifications = FlutterLocalNotificationsPlugin();
 
 class Home extends StatefulWidget {
   @override
@@ -25,7 +26,6 @@ class _HomeState extends State<Home> {
   final List<Widget> _children = [
     Log(),
     Settings(),
-    LocalNotificationWidget(),
   ];
 
   @override
@@ -34,6 +34,12 @@ class _HomeState extends State<Home> {
       receive(new List<String>(), context);
     });
     super.initState();
+
+    final settingsAndroid = AndroidInitializationSettings('ic_launcher');
+    final settingsIOS = IOSInitializationSettings();
+
+    notifications.initialize(
+        InitializationSettings(settingsAndroid, settingsIOS));
   }
 
   Future _getThingsOnStartup() async {
@@ -52,8 +58,6 @@ class _HomeState extends State<Home> {
               icon: Icon(Icons.access_time), title: Text("Log")),
           BottomNavigationBarItem(
               icon: Icon(Icons.settings), title: Text("Settings")),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.settings), title: Text("Settings")),
         ],
       ),
     );
@@ -67,7 +71,6 @@ class _HomeState extends State<Home> {
 }
 
 void receive (List<String> arguments, BuildContext context) async {
-  final notifications = FlutterLocalNotificationsPlugin();
 
   ConnectionSettings settings = new ConnectionSettings(
       host: "192.168.1.2",
