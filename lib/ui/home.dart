@@ -52,6 +52,8 @@ class _HomeState extends State<Home> {
               icon: Icon(Icons.access_time), title: Text("Log")),
           BottomNavigationBarItem(
               icon: Icon(Icons.settings), title: Text("Settings")),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.settings), title: Text("Settings")),
         ],
       ),
     );
