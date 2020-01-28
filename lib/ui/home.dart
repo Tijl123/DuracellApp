@@ -112,7 +112,7 @@ void receive (List<String> arguments, BuildContext context) async {
       var arr = string.split(";");
       print(arr);
       showAlertDialog(context, arr[0], arr[1]);
-      LogModel log = new LogModel(id: null, sensor: arr[0], waarde: arr[1], datum: arr[2], 0);
+      LogModel log = new LogModel(id: null, sensor: arr[0], waarde: arr[1], datum: arr[2], isChecked: 0);
       DBProvider.db.insertLog(log);
       showOngoingNotification(notifications, title: "Sensor: " + arr[0], body: "Waarde: " + arr[1], id: int.parse(arr[1]));
       new Future.delayed(const Duration(seconds: 1));

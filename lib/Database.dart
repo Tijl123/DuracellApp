@@ -42,7 +42,7 @@ class DBProvider {
     int id = table.first["id"];
     //insert to the table using the new id
     var raw = await db.rawInsert(
-        "INSERT Into Log (id,sensor,waarde,datum, isChecked)"
+        "INSERT Into Log (id,sensor,waarde,datum,isChecked)"
             " VALUES (?,?,?,?, ?)",
         [id, log.sensor, log.waarde, log.datum]);
     return raw;
