@@ -46,15 +46,16 @@ class _Settings extends State<Settings> {
                         child: SwitchListTile(
                           value: (item.isSubscribed == 1)? true : false,
                           onChanged: (bool value) { setState(() {
-                            if(value == true){
-                              item.isSubscribed = 1;
-                            }else{
-                              item.isSubscribed = 0;
-                              resetConnection(context, item.sensor);
-                            }
-                            DBProvider.db.updateSensor(item);
-                            receive(new List<String>(), context);
-                          });},
+                              if(value == true){
+                                item.isSubscribed = 1;
+                              }else{
+                                item.isSubscribed = 0;
+                                resetConnection(context, item.sensor);
+                              }
+                              DBProvider.db.updateSensor(item);
+                              receive(new List<String>(), context);
+                            });
+                          },
                           title: Text(item.sensor),
                         ),
                       ),
