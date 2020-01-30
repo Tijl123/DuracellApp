@@ -10,6 +10,8 @@ class Log extends StatefulWidget {
 
 class _Log extends State<Log> {
 
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     super.initState();
@@ -19,6 +21,7 @@ class _Log extends State<Log> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text("Log"),
         centerTitle: true,
@@ -62,6 +65,10 @@ class _Log extends State<Log> {
                                           onPressed: () {
                                             setState(() {
                                               DBProvider.db.deleteLog(item.id);
+                                              _scaffoldKey.currentState.showSnackBar(SnackBar(
+                                                content: Text("Log verwijderd"),
+                                                backgroundColor: Colors.green.shade500,
+                                              ));
                                             });
                                             Navigator.of(context).pop();
                                           },
@@ -106,8 +113,41 @@ class _Log extends State<Log> {
         backgroundColor: Colors.red,
         child: Icon(Icons.delete),
         onPressed: () async {
-          DBProvider.db.deleteAll();
-          setState(() {});
+          final bool res = await showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  content: Text("Wilt alle logs verwijderen?"),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text(
+                        "Annuleren",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    FlatButton(
+                      child: Text(
+                        "Verwijderen",
+                        style: TextStyle(color: Colors.red),
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          DBProvider.db.deleteAll();
+                          _scaffoldKey.currentState.showSnackBar(SnackBar(
+                            content: Text("Logs verwijderd"),
+                            backgroundColor: Colors.green.shade500,
+                          ));
+                        });
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              });
+          return res;
         },
       ),
     );
