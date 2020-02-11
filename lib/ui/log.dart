@@ -20,7 +20,7 @@ class _Log extends State<Log> {
   @override
   void initState() {
     super.initState();
-    timer = new Timer.periodic(new Duration(seconds: 2), (Timer timer) async {
+    timer = new Timer.periodic(new Duration(milliseconds: 500), (Timer timer) async {
       this.setState(() {
         _data = DBProvider.db.getAllLogs();
       });
