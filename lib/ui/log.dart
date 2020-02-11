@@ -28,6 +28,7 @@ class _Log extends State<Log> {
         backgroundColor: Colors.brown.shade600,
       ),
       body:
+
         FutureBuilder<List<LogModel>>(
             future: DBProvider.db.getAllLogs(),
             builder: (BuildContext context, AsyncSnapshot<List<LogModel>> snapshot) {
