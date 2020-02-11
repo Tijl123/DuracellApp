@@ -77,7 +77,7 @@ class _Settings extends State<Settings> {
 
 void resetConnection(BuildContext context, String unsub){
   ConnectionSettings settings = new ConnectionSettings(
-      host: "192.168.1.2",
+      host: "81.82.52.102",
       virtualHost: "team1vhost",
       authProvider: const PlainAuthenticator("team1", "team1")
   );

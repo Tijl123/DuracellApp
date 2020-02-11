@@ -72,7 +72,7 @@ class _HomeState extends State<Home> {
 void receive (List<String> arguments, BuildContext context) async {
 
   ConnectionSettings settings = new ConnectionSettings(
-      host: "192.168.1.2",
+      host: "81.82.52.102",
       virtualHost: "team1vhost",
       authProvider: const PlainAuthenticator("team1", "team1")
   );
@@ -155,7 +155,7 @@ Future<String> _getId(BuildContext context) async {
 
 void sent (List<String> arguments, String sensor, String datum, String waarde) {
   ConnectionSettings settings = new ConnectionSettings(
-      host: "192.168.1.2",
+      host: "81.82.52.102",
       virtualHost: "team1vhost",
       authProvider: const PlainAuthenticator("team1", "team1")
   );
