@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:duracellapp/Database.dart';
 import 'package:duracellapp/LogModel.dart';
 import 'package:duracellapp/SensorModel.dart';
+import 'package:duracellapp/ui/home.dart';
 import 'package:flutter/material.dart';
 
 class Log extends StatefulWidget {
@@ -11,12 +14,24 @@ class Log extends StatefulWidget {
 class _Log extends State<Log> {
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  Timer timer;
+  Future<List<LogModel>> _data;
 
   @override
   void initState() {
     super.initState();
+    timer = new Timer.periodic(new Duration(seconds: 2), (Timer timer) async {
+      this.setState(() {
+        _data = DBProvider.db.getAllLogs();
+      });
+    });
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    timer.cancel();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +42,8 @@ class _Log extends State<Log> {
         centerTitle: true,
         backgroundColor: Colors.brown.shade600,
       ),
-      body:
-
-        FutureBuilder<List<LogModel>>(
-            future: DBProvider.db.getAllLogs(),
+      body: FutureBuilder<List<LogModel>>(
+            future: _data,
             builder: (BuildContext context, AsyncSnapshot<List<LogModel>> snapshot) {
               if (snapshot.hasData) {
                 return ListView.builder(

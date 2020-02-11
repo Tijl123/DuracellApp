@@ -53,6 +53,7 @@ class _Settings extends State<Settings> {
                                 resetConnection(context, item.sensor);
                               }
                               DBProvider.db.updateSensor(item);
+                              receive(new List<String>(), context);
                             });
                           },
                           title: Text(item.sensor),

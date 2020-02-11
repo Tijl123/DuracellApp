@@ -41,7 +41,7 @@ class _MyAppState extends State<MyApp> {
         image: new Image.asset('assets/images/splash.png'),
         backgroundColor: Colors.black,
         styleTextUnderTheLoader: new TextStyle(),
-        photoSize: 100.0,
+        photoSize: 70.0,
         loaderColor: Colors.white
     );
   }
