@@ -67,111 +67,116 @@ class _HomeState extends State<Home> {
       _currentIndex = index;
     });
   }
-}
 
-void receive (List<String> arguments, BuildContext context) async {
+  void receive (List<String> arguments, BuildContext context) async {
 
-  ConnectionSettings settings = new ConnectionSettings(
-      host: "81.82.52.102",
-      virtualHost: "team1vhost",
-      authProvider: const PlainAuthenticator("team1", "team1")
-  );
+    ConnectionSettings settings = new ConnectionSettings(
+        host: "81.82.52.102",
+        virtualHost: "team1vhost",
+        authProvider: const PlainAuthenticator("team1", "team1")
+    );
 
-  Client client = new Client(settings: settings);
+    Client client = new Client(settings: settings);
 
-  ProcessSignal.sigint.watch().listen((_) {
-    client.close().then((_) {
-      print("close client");
-      exit(0);
+    ProcessSignal.sigint.watch().listen((_) {
+      client.close().then((_) {
+        print("close client");
+        exit(0);
+      });
     });
-  });
-  List<String> routingKeys = [];
-  List<SensorModel> sensoren = await DBProvider.db.getAllSensors();
-  for (var i=0; i<sensoren.length; i++) {
-    if(sensoren[i].isSubscribed == 1){
-      routingKeys.add(sensoren[i].sensor);
+    List<String> routingKeys = [];
+    List<SensorModel> sensoren = await DBProvider.db.getAllSensors();
+    for (var i=0; i<sensoren.length; i++) {
+      if(sensoren[i].isSubscribed == 1){
+        routingKeys.add(sensoren[i].sensor);
+      }
+    }
+    print(routingKeys);
+
+    client
+        .channel()
+        .then((Channel channel) {
+      return channel.exchange("C1direct", ExchangeType.DIRECT, durable: true);
+    })
+        .then((Exchange exchange) async{
+      print(" [*] Waiting for messages in logs. To Exit press CTRL+C");
+      return exchange.bindQueueConsumer(await _getId(context), routingKeys,
+          consumerTag: "C1direct", noAck: true
+      );
+    })
+        .then((Consumer consumer) {
+      consumer.listen((AmqpMessage event) {
+        print(" [x] ${event.routingKey}:'${event.payloadAsString}'");
+        var string = event.payloadAsString;
+        var arr = string.split(";");
+        print(arr);
+        showAlertDialog(context, arr[0], arr[1], arr[2]);
+        LogModel log = new LogModel(id: null, sensor: arr[0], waarde: arr[1], datum: arr[2], isChecked: 0);
+        DBProvider.db.insertLog(log);
+        showOngoingNotification(notifications, title: "Sensor: " + arr[0], body: "Waarde: " + arr[1], id: int.parse(arr[1]));
+        new Future.delayed(const Duration(seconds: 1));
+      });
+    });
+  }
+
+  showAlertDialog(BuildContext context, String sensor, String waarde, String datum) {
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return WillPopScope(
+          onWillPop: () {},
+          child: new AlertDialog(
+            title: Text("Notificatie voor " + sensor),
+            content: Text(sensor + " heeft een waarde van " + waarde),
+            actions: [
+              FlatButton(
+                child: Text("OK"),
+                onPressed: () {
+                  sent(new List<String>(), sensor, datum, waarde);
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<String> _getId(BuildContext context) async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    if (Theme.of(context).platform == TargetPlatform.iOS) {
+      IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
+      return iosDeviceInfo.identifierForVendor; // unique ID on iOS
+    } else {
+      AndroidDeviceInfo androidDeviceInfo = await deviceInfo.androidInfo;
+      return androidDeviceInfo.androidId; // unique ID on Android
     }
   }
-  print(routingKeys);
 
-  client
-      .channel()
-      .then((Channel channel) {
-    return channel.exchange("C1direct", ExchangeType.DIRECT, durable: true);
-  })
-      .then((Exchange exchange) async{
-    print(" [*] Waiting for messages in logs. To Exit press CTRL+C");
-    return exchange.bindQueueConsumer(await _getId(context), routingKeys,
-        consumerTag: "C1direct", noAck: true
+  void sent (List<String> arguments, String sensor, String datum, String waarde) {
+    ConnectionSettings settings = new ConnectionSettings(
+        host: "81.82.52.102",
+        virtualHost: "team1vhost",
+        authProvider: const PlainAuthenticator("team1", "team1")
     );
-  })
-      .then((Consumer consumer) {
-    consumer.listen((AmqpMessage event) {
-      print(" [x] ${event.routingKey}:'${event.payloadAsString}'");
-      var string = event.payloadAsString;
-      var arr = string.split(";");
-      print(arr);
-      showAlertDialog(context, arr[0], arr[1], arr[2]);
-      LogModel log = new LogModel(id: null, sensor: arr[0], waarde: arr[1], datum: arr[2], isChecked: 0);
-      DBProvider.db.insertLog(log);
-      showOngoingNotification(notifications, title: "Sensor: " + arr[0], body: "Waarde: " + arr[1], id: int.parse(arr[1]));
-      new Future.delayed(const Duration(seconds: 1));
+
+    Client client = new Client(settings: settings);
+
+    String consumeTag = "C1direct";
+    String msg = sensor + ";" + waarde + ";" + datum + ";confirmed";
+    client
+        .channel()
+        .then((Channel channel) {
+      return channel.queue(consumeTag, durable: true);
+    })
+        .then((Queue queue) {
+      queue.publish(msg);
+      print(" [x] Sent ${msg}");
+      client.close();
     });
-  });
-}
-
-showAlertDialog(BuildContext context, String sensor, String waarde, String datum) {
-
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text("Notificatie voor " + sensor),
-        content: Text(sensor + " heeft een waarde van " + waarde),
-        actions: [
-          FlatButton(
-            child: Text("OK"),
-            onPressed: () {
-              sent(new List<String>(), sensor, datum, waarde);
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      );
-    },
-  );
-}
-
-Future<String> _getId(BuildContext context) async {
-  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-  if (Theme.of(context).platform == TargetPlatform.iOS) {
-    IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
-    return iosDeviceInfo.identifierForVendor; // unique ID on iOS
-  } else {
-    AndroidDeviceInfo androidDeviceInfo = await deviceInfo.androidInfo;
-    return androidDeviceInfo.androidId; // unique ID on Android
   }
 }
 
-void sent (List<String> arguments, String sensor, String datum, String waarde) {
-  ConnectionSettings settings = new ConnectionSettings(
-      host: "81.82.52.102",
-      virtualHost: "team1vhost",
-      authProvider: const PlainAuthenticator("team1", "team1")
-  );
-
-  Client client = new Client(settings: settings);
-
-  String consumeTag = "C1direct";
-  String msg = sensor + ";" + waarde + ";" + datum + ";confirmed";
-  client
-      .channel()
-      .then((Channel channel) {
-    return channel.queue(consumeTag, durable: true);
-  })
-      .then((Queue queue) {
-    queue.publish(msg);
-    print(" [x] Sent ${msg}");
-    client.close();
-  });
-}
