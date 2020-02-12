@@ -34,7 +34,6 @@ class _Grafiek extends State<Grafiek> {
             Map<DateTime, double> line3 = {};
             snapshot.data.forEach((log) {
               var dateTime = new DateFormat("dd/MM/yyyy HH:mm:ss").parse(log.datum);
-              
                 switch (log.sensor) {
                   case "sensor1":
                     {
@@ -53,6 +52,16 @@ class _Grafiek extends State<Grafiek> {
                     break;
                 }
             });
+
+            if (line1.isEmpty) {
+              line1[DateTime.now()] = 0.0;
+            }
+            if(line2.isEmpty){
+              line2[DateTime.now()] = 0.0;
+            }
+            if(line3.isEmpty){
+              line3[DateTime.now()] = 0.0;
+            }
 
             LineChart chart;
 
