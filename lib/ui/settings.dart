@@ -104,5 +104,3 @@ Future<String> _getId(BuildContext context) async {
     return androidDeviceInfo.androidId; // unique ID on Android
   }
 }
-
-

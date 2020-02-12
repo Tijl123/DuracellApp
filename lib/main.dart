@@ -14,7 +14,7 @@ void main() {
     home: new MyApp(),
   ));
   Workmanager.initialize(
-      callbackDispatcher,// If enabled it will post a notification whenever the task is running. Handy for debugging tasks
+      callbackDispatcher,
   );
   Workmanager.registerPeriodicTask(
     "1",
