@@ -131,7 +131,7 @@ class _Log extends State<Log> {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  content: Text("Wilt alle logs verwijderen?"),
+                  content: Text("Wilt u alle logs verwijderen?"),
                   actions: <Widget>[
                     FlatButton(
                       child: Text(

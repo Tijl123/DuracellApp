@@ -27,6 +27,7 @@ dependencies:
   path:
   device_info: ^0.4.1+4
   splashscreen: ^1.2.0
+  charts_flutter: ^0.8.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
