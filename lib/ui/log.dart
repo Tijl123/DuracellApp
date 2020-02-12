@@ -20,7 +20,7 @@ class _Log extends State<Log> {
   @override
   void initState() {
     super.initState();
-    timer = new Timer.periodic(new Duration(milliseconds: 500), (Timer timer) async {
+    timer = new Timer.periodic(new Duration(seconds: 2), (Timer timer) async {
       this.setState(() {
         _data = DBProvider.db.getAllLogs();
       });
@@ -39,8 +39,8 @@ class _Log extends State<Log> {
       key: _scaffoldKey,
       appBar: AppBar(
         title: Text("Log"),
-        centerTitle: true,
-        backgroundColor: Colors.brown.shade600,
+      centerTitle: true,
+      backgroundColor: Colors.brown.shade600,
       ),
       body: FutureBuilder<List<LogModel>>(
             future: _data,

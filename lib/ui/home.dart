@@ -11,7 +11,6 @@ import "package:dart_amqp/dart_amqp.dart";
 import 'package:duracellapp/local_notification_helper.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:async';
-import 'package:charts_flutter/flutter.dart' as charts;
 
 final notifications = FlutterLocalNotificationsPlugin();
 
@@ -26,7 +25,7 @@ class _HomeState extends State<Home> {
   int _currentIndex = 0;
   final List<Widget> _children = [
     Log(),
-    Grafiek.withSampleData(),
+    Grafiek(),
     Settings(),
   ];
 
