@@ -1,12 +1,28 @@
-import 'package:fl_animated_linechart/chart/animated_line_chart.dart';
+import 'package:fl_animated_linechart/chart/area_line_chart.dart';
+import 'package:fl_animated_linechart/common/pair.dart';
 import 'package:fl_animated_linechart/fl_animated_linechart.dart';
 import 'package:flutter/material.dart';
 
-class Grafiek extends StatelessWidget {
-  LineChart lineChart = LineChart.fromDateTimeMaps([line1, line2], [Colors.green, Colors.blue], List<String> units);
+class Grafiek extends StatefulWidget {
+  Grafiek({Key key, this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  _Grafiek createState() => _Grafiek();
+}
+
+class _Grafiek extends State<Grafiek> {
+  int chartIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+    Map<DateTime, double> line1 = createLine1();
+
+    LineChart chart;
+
+    chart = LineChart.fromDateTimeMaps([line1], [Colors.red.shade900], ['']);
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Grafiek"),
@@ -19,18 +35,17 @@ class Grafiek extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              //Expanded(child: AnimatedLineChart(lineChart)),
-            ]
-        ),
+              Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: AnimatedLineChart(
+                      chart,
+                      key: UniqueKey(),
+                    ), //Unique key to force animations
+                  )),
+              SizedBox(width: 200, height: 50, child: Text('')),
+            ]),
       ),
     );
   }
-}
-
-/// Sample time series data type.
-class TimeSeriesSales {
-  final DateTime time;
-  final int sales;
-
-  TimeSeriesSales(this.time, this.sales);
 }
