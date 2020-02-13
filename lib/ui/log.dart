@@ -22,7 +22,7 @@ class _Log extends State<Log> {
     super.initState();
     timer = new Timer.periodic(new Duration(seconds: 2), (Timer timer) async {
       this.setState(() {
-        _data = DBProvider.db.getAllLogs();
+        _data = DBProvider.db.getAllLogsById();
       });
     });
   }
