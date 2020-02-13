@@ -116,7 +116,7 @@ void receive (List<String> arguments, BuildContext context) async {
       var arr = string.split(";");
       print(arr);
       showAlertDialog(context, arr[0], arr[1], arr[2]);
-      LogModel log = new LogModel(id: null, sensor: arr[0], waarde: arr[1], datum: arr[2], isChecked: 0);
+      LogModel log = new LogModel(id: null, sensor: arr[0], waarde: arr[1], datum: arr[2]);
       DBProvider.db.insertLog(log);
       showOngoingNotification(notifications, title: "Sensor: " + arr[0], body: "Waarde: " + arr[1], id: int.parse(arr[1]));
       new Future.delayed(const Duration(seconds: 1));
@@ -139,7 +139,6 @@ showAlertDialog(BuildContext context, String sensor, String waarde, String datum
             FlatButton(
               child: Text("OK"),
               onPressed: () {
-                sent(new List<String>(), sensor, datum, waarde);
                 Navigator.of(context).pop();
               },
             ),
@@ -159,27 +158,4 @@ Future<String> _getId(BuildContext context) async {
     AndroidDeviceInfo androidDeviceInfo = await deviceInfo.androidInfo;
     return androidDeviceInfo.androidId; // unique ID on Android
   }
-}
-
-void sent (List<String> arguments, String sensor, String datum, String waarde) {
-  ConnectionSettings settings = new ConnectionSettings(
-      host: "81.82.52.102",
-      virtualHost: "team1vhost",
-      authProvider: const PlainAuthenticator("team1", "team1")
-  );
-
-  Client client = new Client(settings: settings);
-
-  String consumeTag = "Bevestigingen";
-  String msg = sensor + ";" + waarde + ";" + datum + ";confirmed";
-  client
-      .channel()
-      .then((Channel channel) {
-    return channel.queue(consumeTag, durable: true);
-  })
-      .then((Queue queue) {
-    queue.publish(msg);
-    print(" [x] Sent ${msg}");
-    client.close();
-  });
 }

@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:duracellapp/Database.dart';
 import 'package:duracellapp/LogModel.dart';
-import 'package:duracellapp/SensorModel.dart';
-import 'package:duracellapp/ui/home.dart';
 import 'package:flutter/material.dart';
 
 class Log extends StatefulWidget {

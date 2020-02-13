@@ -16,13 +16,11 @@ class Settings extends StatefulWidget {
 class _Settings extends State<Settings> {
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  
+
   @override
   void initState() {
     super.initState();
   }
-
-  bool _sensor = false;
 
   @override
   Widget build(BuildContext context) {

@@ -57,11 +57,12 @@ class AfterSplash extends StatelessWidget {
 }
 
 
-void callbackDispatcher() {
+void callbackDispatcher(BuildContext context) {
   Workmanager.executeTask((task, inputData) async {
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        receive(new List<String>(), context);
         print('connected');
       }
     } on SocketException catch (_) {

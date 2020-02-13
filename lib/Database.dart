@@ -27,7 +27,7 @@ class DBProvider {
     String path = join(documentsDirectory.path, "LogDB.db");
     return await openDatabase(path, version: 1, onOpen: (db) {
     }, onCreate: (Database db, int version) async {
-      await db.execute("CREATE TABLE Log(id INTEGER PRIMARY KEY, sensor TEXT, waarde TEXT, datum TEXT, isChecked INTEGER)");
+      await db.execute("CREATE TABLE Log(id INTEGER PRIMARY KEY, sensor TEXT, waarde TEXT, datum TEXT)");
       await db.execute("CREATE TABLE Sensor(id INTEGER PRIMARY KEY, sensor TEXT, isSubscribed INTEGER)");
       await db.rawInsert("INSERT Into Sensor (id,sensor, isSubscribed) VALUES (1,'sensor1', 1)");
       await db.rawInsert("INSERT Into Sensor (id,sensor, isSubscribed) VALUES (2,'sensor2', 1)");
@@ -42,8 +42,8 @@ class DBProvider {
     int id = table.first["id"];
     //insert to the table using the new id
     var raw = await db.rawInsert(
-        "INSERT Into Log (id,sensor,waarde,datum,isChecked)"
-            " VALUES (?,?,?,?,?)",
+        "INSERT Into Log (id,sensor,waarde,datum)"
+            " VALUES (?,?,?,?)",
         [id, log.sensor, log.waarde, log.datum]);
     return raw;
   }
@@ -76,16 +76,6 @@ class DBProvider {
     return list;
   }
 
-  Future<List<LogModel>> getLogsWhereSensor(String sensor) async {
-    final db = await database;
-    var res = await db.rawQuery("SELECT * FROM Log WHERE sensor LIKE '${sensor}'");
-    print("print");
-    print(res);
-    List<LogModel> list =
-    res.isNotEmpty ? res.map((c) => LogModel.fromMap(c)).toList() : [];
-    return list;
-  }
-
   Future<List<SensorModel>> getAllSensors() async {
     final db = await database;
     var res = await db.query("Sensor");
@@ -94,7 +84,6 @@ class DBProvider {
     return list;
   }
 
-  // A method that retrieves all the dogs from the dogs table.
   deleteLog(int id) async {
     final db = await database;
     return db.delete("Log", where: "id = ?", whereArgs: [id]);
