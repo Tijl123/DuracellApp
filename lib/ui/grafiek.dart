@@ -16,6 +16,7 @@ class Grafiek extends StatefulWidget {
 
 class _Grafiek extends State<Grafiek> {
   int chartIndex = 0;
+  String dropdownValue = 'One';
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +33,7 @@ class _Grafiek extends State<Grafiek> {
             Map<DateTime, double> line1 = {};
             Map<DateTime, double> line2 = {};
             Map<DateTime, double> line3 = {};
+            Map<DateTime, double> line4 = {};
             snapshot.data.forEach((log) {
               var dateTime = new DateFormat("dd/MM/yyyy HH:mm:ss").parse(log.datum);
                 switch (log.sensor) {
@@ -50,6 +52,11 @@ class _Grafiek extends State<Grafiek> {
                       line3[dateTime] = double.parse(log.waarde);
                     }
                     break;
+                  case "sensor4":
+                    {
+                      line4[dateTime] = double.parse(log.waarde);
+                    }
+                    break;
                 }
             });
 
@@ -62,6 +69,9 @@ class _Grafiek extends State<Grafiek> {
             if(line3.isEmpty){
               line3[DateTime.now()] = 0.0;
             }
+            if(line4.isEmpty){
+              line4[DateTime.now()] = 0.0;
+            }
 
             LineChart chart;
 
@@ -69,8 +79,10 @@ class _Grafiek extends State<Grafiek> {
               chart = LineChart.fromDateTimeMaps([line1], [Colors.red.shade900], ['']);
             } else if (chartIndex == 1) {
               chart = LineChart.fromDateTimeMaps([line2], [Colors.green.shade900], ['']);
-            } else {
+            } else if (chartIndex == 2) {
               chart = LineChart.fromDateTimeMaps([line3], [Colors.yellow.shade900], ['']);
+            } else {
+              chart = LineChart.fromDateTimeMaps([line4], [Colors.blue.shade900], ['']);
             }
             return Container(
               child: Column(
@@ -78,6 +90,32 @@ class _Grafiek extends State<Grafiek> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    DropdownButton<String>(
+                    value: dropdownValue,
+                    icon: Icon(Icons.arrow_downward),
+                    iconSize: 24,
+                    elevation: 16,
+                    style: TextStyle(
+                        color: Colors.black
+                    ),
+                    underline: Container(
+                      height: 2,
+                      color: Colors.brown.shade900,
+                    ),
+                    onChanged: (String newValue) {
+                      setState(() {
+                        dropdownValue = newValue;
+                      });
+                    },
+                    items: <String>['One', 'Two', 'Free', 'Four']
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    })
+                        .toList(),
+                  ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
@@ -127,6 +165,21 @@ class _Grafiek extends State<Grafiek> {
                             onPressed: () {
                               setState(() {
                                 chartIndex = 2;
+                              });
+                            },
+                          ),
+                          FlatButton(
+                            shape: RoundedRectangleBorder(
+                                side: BorderSide(color: Colors.black45),
+                                borderRadius: BorderRadius.all(Radius.circular(3))),
+                            child: Text('Sensor 4',
+                                style: TextStyle(
+                                    color: chartIndex == 3
+                                        ? Colors.black
+                                        : Colors.black12)),
+                            onPressed: () {
+                              setState(() {
+                                chartIndex = 3;
                               });
                             },
                           ),

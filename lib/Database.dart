@@ -32,6 +32,7 @@ class DBProvider {
       await db.rawInsert("INSERT Into Sensor (id,sensor, isSubscribed) VALUES (1,'sensor1', 1)");
       await db.rawInsert("INSERT Into Sensor (id,sensor, isSubscribed) VALUES (2,'sensor2', 1)");
       await db.rawInsert("INSERT Into Sensor (id,sensor, isSubscribed) VALUES (3,'sensor3', 0)");
+      await db.rawInsert("INSERT Into Sensor (id,sensor, isSubscribed) VALUES (4,'sensor4', 0)");
     });
   }
 
