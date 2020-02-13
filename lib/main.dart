@@ -7,7 +7,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:workmanager/workmanager.dart';
 
-
+BuildContext _context;
 
 void main() {
   runApp(new MaterialApp(
@@ -50,19 +50,18 @@ class _MyAppState extends State<MyApp> {
 class AfterSplash extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new Home(
-
-    );
+    _context = context;
+    return new Home();
   }
 }
 
 
-void callbackDispatcher(BuildContext context) {
+void callbackDispatcher() {
   Workmanager.executeTask((task, inputData) async {
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        receive(new List<String>(), context);
+        receive(new List<String>(), _context);
         print('connected');
       }
     } on SocketException catch (_) {
