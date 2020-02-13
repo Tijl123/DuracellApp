@@ -123,47 +123,6 @@ class _Log extends State<Log> {
               }
             },
           ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.red,
-        child: Icon(Icons.delete),
-        onPressed: () async {
-          final bool res = await showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  content: Text("Wilt u alle logs verwijderen?"),
-                  actions: <Widget>[
-                    FlatButton(
-                      child: Text(
-                        "Annuleren",
-                        style: TextStyle(color: Colors.black),
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    FlatButton(
-                      child: Text(
-                        "Verwijderen",
-                        style: TextStyle(color: Colors.red),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          DBProvider.db.deleteAll();
-                          _scaffoldKey.currentState.showSnackBar(SnackBar(
-                            content: Text("Logs verwijderd"),
-                            backgroundColor: Colors.green.shade500,
-                          ));
-                        });
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                );
-              });
-          return res;
-        },
-      ),
     );
   }
 }
