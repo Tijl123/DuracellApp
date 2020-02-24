@@ -22,13 +22,17 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
   int _currentIndex = 0;
+
+  //initialiseren navigatie-componenten
   final List<Widget> _children = [
     Log(),
     Grafiek(),
     Settings(),
   ];
 
+  //kijkt constant na op messages van RabbitMQ
   @override
   void initState() {
     _getThingsOnStartup().then((value){
@@ -47,6 +51,7 @@ class _HomeState extends State<Home> {
     await Future.delayed(Duration(seconds: 2));
   }
 
+  // navigatie
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,8 +78,10 @@ class _HomeState extends State<Home> {
   }
 }
 
+//kijkt na op messages van RabbitMQ
 void receive (List<String> arguments, BuildContext context) async {
 
+  // maakt connectie met RabbitMQ
   ConnectionSettings settings = new ConnectionSettings(
       host: "81.82.52.102",
       virtualHost: "team1vhost",
@@ -89,6 +96,8 @@ void receive (List<String> arguments, BuildContext context) async {
       exit(0);
     });
   });
+
+  //vraagt sensoren op waar gebruiker op gesubscribed is en zet deze in de routing keys
   List<String> routingKeys = [];
   List<SensorModel> sensoren = await DBProvider.db.getAllSensors();
   for (var i=0; i<sensoren.length; i++) {
@@ -115,17 +124,22 @@ void receive (List<String> arguments, BuildContext context) async {
       var string = event.payloadAsString;
       var arr = string.split(";");
       print(arr);
+      // toont dialoogvenster bij ontvangen van message van RabbitMQ
       showAlertDialog(context, arr[0], arr[1], arr[2]);
+
+      // voegt log toe aan de database
       LogModel log = new LogModel(id: null, sensor: arr[0], waarde: arr[1], datum: arr[2]);
       DBProvider.db.insertLog(log);
+
+      // stuurt push notificatie bij ontvangen van message van RabbitMQ
       showOngoingNotification(notifications, title: "Sensor: " + arr[0], body: "Waarde: " + arr[1], id: int.parse(arr[1]));
       new Future.delayed(const Duration(seconds: 1));
     });
   });
 }
 
+//toont dialoogvenster met gegevens van de RabbitMQ message
 showAlertDialog(BuildContext context, String sensor, String waarde, String datum) {
-
   showDialog(
     context: context,
     barrierDismissible: false,
@@ -149,6 +163,7 @@ showAlertDialog(BuildContext context, String sensor, String waarde, String datum
   );
 }
 
+// vraagt id van device op
 Future<String> _getId(BuildContext context) async {
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
   if (Theme.of(context).platform == TargetPlatform.iOS) {

@@ -15,6 +15,7 @@ class _Log extends State<Log> {
   Timer timer;
   Future<List<LogModel>> _data;
 
+  //zorgt dat de lijst met logs regelmatig vernieuwd wordt
   @override
   void initState() {
     super.initState();
@@ -31,6 +32,7 @@ class _Log extends State<Log> {
     timer.cancel();
   }
 
+  // lijst met alle logs opgeslagen in de database
   @override
   Widget build(BuildContext context) {
     return Scaffold(
