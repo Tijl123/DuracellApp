@@ -9,6 +9,7 @@ import 'package:workmanager/workmanager.dart';
 
 BuildContext _context;
 
+//initialiseren applicatie
 void main() {
   runApp(new MaterialApp(
     home: new MyApp(),
@@ -26,6 +27,7 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => new _MyAppState();
 }
 
+//toont splashscreen bij opstarten app
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
@@ -47,6 +49,7 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
+// toont home screen na splashscreen
 class AfterSplash extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -55,16 +58,19 @@ class AfterSplash extends StatelessWidget {
   }
 }
 
-
+// achtergrondproces
 void callbackDispatcher() {
   Workmanager.executeTask((task, inputData) async {
+    //kijkt na op internetconnectie
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        //kijkt na op messages van RabbitMQ
         receive(new List<String>(), _context);
         print('connected');
       }
     } on SocketException catch (_) {
+      //stuurt notificatie dat er geen internet connectie is
       final notifications = FlutterLocalNotificationsPlugin();
       showOngoingNotification(notifications, title: 'Geen internet connectie', body: 'Er kunnen geen notificaties ontvangen worden.');
       print('not connected');
