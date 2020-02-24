@@ -32,6 +32,7 @@ class _Settings extends State<Settings> {
         backgroundColor: Colors.brown.shade600,
       ),
       body:
+      //Lijst tonten van sensoren uit de lokale database
       FutureBuilder<List<SensorModel>>(
         future: DBProvider.db.getAllSensors(),
         builder: (BuildContext context, AsyncSnapshot<List<SensorModel>> snapshot) {
@@ -117,6 +118,7 @@ class _Settings extends State<Settings> {
   }
 }
 
+//Na het wijzigen van de instellingen word de queu verwijderd
 void resetConnection(BuildContext context, String unsub){
   ConnectionSettings settings = new ConnectionSettings(
       host: "81.82.52.102",
@@ -136,6 +138,7 @@ void resetConnection(BuildContext context, String unsub){
   });
 }
 
+//vraagt id van device op
 Future<String> _getId(BuildContext context) async {
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
   if (Theme.of(context).platform == TargetPlatform.iOS) {

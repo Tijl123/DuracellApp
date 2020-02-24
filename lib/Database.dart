@@ -22,6 +22,7 @@ class DBProvider {
     return _database;
   }
 
+  //Database word geinitialiseerd
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, "LogDB.db");
@@ -36,6 +37,7 @@ class DBProvider {
     });
   }
 
+  //Methode om een log toe te voegen
   Future<void> insertLog(LogModel log) async {
     final db = await database;
     //get the biggest id in the table
@@ -49,6 +51,7 @@ class DBProvider {
     return raw;
   }
 
+  //Methode om een sensor toe te voegen
   Future<void> insertSensor(SensorModel sensor) async {
     final db = await database;
     //get the biggest id in the table
@@ -62,6 +65,7 @@ class DBProvider {
     return raw;
   }
 
+  //Methode om senser te wijzigen
   updateSensor(SensorModel sensor) async {
     final db = await database;
     var res = await db.update("Sensor", sensor.toMap(),
@@ -69,6 +73,7 @@ class DBProvider {
     return res;
   }
 
+  //Lijst van alle logs opvragen
   Future<List<LogModel>> getAllLogs() async {
     final db = await database;
     var res = await db.query("Log");
@@ -77,7 +82,8 @@ class DBProvider {
     return list;
   }
 
-  Future<List<LogModel>> getAllLogsById() async {
+  //Lijst van alle logs gesorteerd op datum
+  Future<List<LogModel>> getAllLogsOrderByDate() async {
     final db = await database;
     var res = await db.query("Log", orderBy: "id DESC");
     List<LogModel> list =
@@ -85,6 +91,7 @@ class DBProvider {
     return list;
   }
 
+  //Lijst van alle sensors
   Future<List<SensorModel>> getAllSensors() async {
     final db = await database;
     var res = await db.query("Sensor");
@@ -93,11 +100,13 @@ class DBProvider {
     return list;
   }
 
+  //Een bepaalde log verwijderen
   deleteLog(int id) async {
     final db = await database;
     return db.delete("Log", where: "id = ?", whereArgs: [id]);
   }
 
+  //Alle logs verwijderen
   deleteAll() async {
     final db = await database;
     db.rawDelete("Delete from Log");

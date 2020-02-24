@@ -2,6 +2,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:meta/meta.dart';
 
 NotificationDetails get _ongoing {
+
+  //Specificatie aanmaken voor de notificatie
   final androidChannelSpecifics = AndroidNotificationDetails(
     'your channel id',
     'your channel name',
@@ -15,6 +17,7 @@ NotificationDetails get _ongoing {
   return NotificationDetails(androidChannelSpecifics, iOSChannelSpecifics);
 }
 
+//Melding dat bovenaan toont
 Future showOngoingNotification(
     FlutterLocalNotificationsPlugin notifications, {
       @required String title,
@@ -24,6 +27,7 @@ Future showOngoingNotification(
     _showNotification(notifications,
         title: title, body: body, id: id, type: _ongoing);
 
+//Melding niet bovenaan toont
 Future _showNotification(
     FlutterLocalNotificationsPlugin notifications, {
       @required String title,

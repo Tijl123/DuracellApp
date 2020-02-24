@@ -37,6 +37,8 @@ class _Grafiek extends State<Grafiek> {
             snapshot.data.forEach((log) {
               var dateTime =
                   new DateFormat("dd/MM/yyyy HH:mm:ss").parse(log.datum);
+
+              //data sensoren indelen naar de juiste grafieken
               switch (log.sensor) {
                 case "sensor1":
                   {
@@ -61,6 +63,7 @@ class _Grafiek extends State<Grafiek> {
               }
             });
 
+            //Nakijken of de grafiek leeg is
             if (line1.isEmpty) {
               line1[DateTime.now()] = 0.0;
             }
@@ -76,6 +79,7 @@ class _Grafiek extends State<Grafiek> {
 
             LineChart chart;
 
+            //Juiste grafiek tonen
             if (chartIndex == 0) {
               chart = LineChart.fromDateTimeMaps(
                   [line1], [Colors.red.shade900], ['']);
