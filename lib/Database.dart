@@ -31,8 +31,8 @@ class DBProvider {
       await db.execute("CREATE TABLE Log(id INTEGER PRIMARY KEY, sensor TEXT, waarde TEXT, datum TEXT, isConfirmed INTEGER, prioriteit TEXT)");
       await db.execute("CREATE TABLE Sensor(id INTEGER PRIMARY KEY, sensor TEXT, isSubscribed INTEGER)");
       await db.rawInsert("INSERT Into Sensor (id,sensor, isSubscribed) VALUES (1,'Lichtsensor', 1)");
-      await db.rawInsert("INSERT Into Sensor (id,sensor, isSubscribed) VALUES (2,'Bewegingssensor', 1)");
-      await db.rawInsert("INSERT Into Sensor (id,sensor, isSubscribed) VALUES (3,'Vlammensensor', 0)");
+      await db.rawInsert("INSERT Into Sensor (id,sensor, isSubscribed) VALUES (2,'Actiesensor', 1)");
+      await db.rawInsert("INSERT Into Sensor (id,sensor, isSubscribed) VALUES (3,'Vlamsensor', 0)");
       await db.rawInsert("INSERT Into Sensor (id,sensor, isSubscribed) VALUES (4,'Geluidssensor', 0)");
     });
   }
@@ -45,9 +45,9 @@ class DBProvider {
     int id = table.first["id"];
     //insert to the table using the new id
     var raw = await db.rawInsert(
-        "INSERT Into Log (id,sensor,waarde,datum,prioriteit)"
-            " VALUES (?,?,?,?)",
-        [id, log.sensor, log.waarde, log.datum]);
+        "INSERT Into Log (id,sensor,waarde,datum,isConfirmed,prioriteit)"
+            " VALUES (?,?,?,?,?,?)",
+        [id, log.sensor, log.waarde, log.datum, log.isConfirmed, log.prioriteit]);
     return raw;
   }
 

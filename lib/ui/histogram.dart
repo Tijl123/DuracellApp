@@ -39,12 +39,12 @@ class _Histogram extends State<Histogram> {
                     b1 = b1 + 1;
                   }
                   break;
-                case "Bewegingssensor":
+                case "Actiesensor":
                   {
                     b2 = b2 + 1;
                   }
                   break;
-                case "Vlammensensor":
+                case "Vlamsensor":
                   {
                     b3 = b3 + 1;
                   }
@@ -58,10 +58,10 @@ class _Histogram extends State<Histogram> {
             });
 
             var data = [
-              ClicksPerYear('Lichtsensor', b1, Colors.blue.shade300),
-              ClicksPerYear('Bewegingssensor', b2, Colors.blue.shade500),
-              ClicksPerYear('Vlammensensor', b3, Colors.blue.shade700),
-              ClicksPerYear('Geluidssensor', b4, Colors.blue.shade900),
+              ClicksPerYear('Licht', b1, Colors.blue.shade300),
+              ClicksPerYear('Actie', b2, Colors.blue.shade500),
+              ClicksPerYear('Vlam', b3, Colors.blue.shade700),
+              ClicksPerYear('Geluid', b4, Colors.blue.shade900),
             ];
 
             var series = [
@@ -89,10 +89,8 @@ class _Histogram extends State<Histogram> {
             );
 
             return Container(
-              child: Column(
-                children: <Widget>[
-                  chartWidget,
-              ],
+              child: Center(
+                child: chartWidget,
             ));
           } else {
             return Center(child: CircularProgressIndicator());

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:device_info/device_info.dart';
 import 'package:duracellapp/Database.dart';
 import 'package:duracellapp/LogModel.dart';
@@ -129,43 +131,19 @@ void receive (List<String> arguments, BuildContext context) async {
       var string = event.payloadAsString;
       var arr = string.split(";");
       print(arr);
-      // toont dialoogvenster bij ontvangen van message van RabbitMQ
-      showAlertDialog(context, arr[0], arr[1], arr[2], arr[3]);
 
       // voegt log toe aan de database
       LogModel log = new LogModel(id: null, sensor: arr[0], waarde: arr[1], datum: arr[2], isConfirmed: 0, prioriteit: arr[3]);
       await DBProvider.db.insertLog(log);
 
       // stuurt push notificatie bij ontvangen van message van RabbitMQ
-      showOngoingNotification(notifications, title: "Sensor: " + arr[0], body: "Waarde: " + arr[1], id: int.parse(arr[1]));
+      var rng = new Random();
+      showOngoingNotification(notifications, title: log.prioriteit + ": " + log.sensor, body: "Waarde: " + log.waarde, id: rng.nextInt(1000));
+
     });
   });
 }
 
-//toont dialoogvenster met gegevens van de RabbitMQ message
-showAlertDialog(BuildContext context, String sensor, String waarde, String datum, String prioriteit) {
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (BuildContext context) {
-      return WillPopScope(
-        onWillPop: () {},
-        child: new AlertDialog(
-          title: Text("Notificatie voor " + sensor),
-          content: Text(sensor + " heeft een waarde van " + waarde),
-          actions: [
-            FlatButton(
-              child: Text("OK"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        ),
-      );
-    },
-  );
-}
 
 // vraagt id van device op
 Future<String> _getId(BuildContext context) async {

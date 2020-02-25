@@ -52,7 +52,7 @@ class _Settings extends State<Settings> {
                                 item.isSubscribed = 1;
                               }else{
                                 item.isSubscribed = 0;
-                                resetConnection(context, item.sensor);
+                                resetConnection(_scaffoldKey.currentContext, item.sensor);
                               }
                               DBProvider.db.updateSensor(item);
                               receive(new List<String>(), context);

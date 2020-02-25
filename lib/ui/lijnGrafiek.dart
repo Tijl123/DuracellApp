@@ -47,17 +47,17 @@ class _LijnGrafiek extends State<LijnGrafiek> {
                     line1[dateTime] = double.parse(log.waarde);
                   }
                   break;
-                case "Bewegingssensor":
+                case "Actiesensor":
                   {
                     line2[dateTime] = double.parse(log.waarde);
                   }
                   break;
-                case "Vlammensensor":
+                case "Vlamsensor":
                   {
                     line3[dateTime] = double.parse(log.waarde);
                   }
                   break;
-                case "Geluidsensor":
+                case "Geluidssensor":
                   {
                     line4[dateTime] = double.parse(log.waarde);
                   }
@@ -131,7 +131,7 @@ class _LijnGrafiek extends State<LijnGrafiek> {
                                 side: BorderSide(color: Colors.black45),
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(3))),
-                            child: Text('Bewegingsensor',
+                            child: Text('Actiesensor',
                                 style: TextStyle(
                                     color: chartIndex == 1
                                         ? Colors.black
@@ -156,7 +156,7 @@ class _LijnGrafiek extends State<LijnGrafiek> {
                                 side: BorderSide(color: Colors.black45),
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(3))),
-                            child: Text('Vlammensensor',
+                            child: Text('Vlamsensor',
                                 style: TextStyle(
                                     color: chartIndex == 2
                                         ? Colors.black

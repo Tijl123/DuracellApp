@@ -51,8 +51,15 @@ class _Log extends State<Log> {
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int index) {
                       LogModel item = snapshot.data[index];
+                      Color backcolor;
+                      if(item.prioriteit == "Hoge prioriteit"){
+                        backcolor = Colors.redAccent;
+                      }
+                      else if(item.prioriteit == "Lage prioriteit"){
+                        backcolor = Colors.orange.shade300;
+                      }
                       return Card(
-                        color: Colors.white,
+                        color: backcolor,
                         child: Dismissible(
                           key: UniqueKey(),
                           direction: DismissDirection.endToStart,
@@ -114,7 +121,7 @@ class _Log extends State<Log> {
                           child: ListTile(
                             title: Text(item.sensor),
                             subtitle: Text(item.waarde),
-                            leading: new Checkbox(
+                            leading: Checkbox(
                                 activeColor: Colors.green,
                                 value: (item.isConfirmed == 1)? true : false,
                                 onChanged: (bool value) {
