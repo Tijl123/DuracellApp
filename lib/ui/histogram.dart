@@ -34,22 +34,22 @@ class _Histogram extends State<Histogram> {
             snapshot.data.forEach((log) {
               //data sensoren indelen naar de juiste grafieken
               switch (log.sensor) {
-                case "sensor1":
+                case "Lichtsensor":
                   {
                     b1 = b1 + 1;
                   }
                   break;
-                case "sensor2":
+                case "Bewegingssensor":
                   {
                     b2 = b2 + 1;
                   }
                   break;
-                case "sensor3":
+                case "Vlammensensor":
                   {
                     b3 = b3 + 1;
                   }
                   break;
-                case "sensor4":
+                case "Geluidssensor":
                   {
                     b4 = b4 + 1;
                   }
