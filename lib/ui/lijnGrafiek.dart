@@ -114,7 +114,7 @@ class _LijnGrafiek extends State<LijnGrafiek> {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(3))),
                             child: Text(
-                              'Sensor 1',
+                              'Lichtsensor',
                               style: TextStyle(
                                   color: chartIndex == 0
                                       ? Colors.black
@@ -131,7 +131,7 @@ class _LijnGrafiek extends State<LijnGrafiek> {
                                 side: BorderSide(color: Colors.black45),
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(3))),
-                            child: Text('Sensor 2',
+                            child: Text('Bewegingsensor',
                                 style: TextStyle(
                                     color: chartIndex == 1
                                         ? Colors.black
@@ -156,7 +156,7 @@ class _LijnGrafiek extends State<LijnGrafiek> {
                                 side: BorderSide(color: Colors.black45),
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(3))),
-                            child: Text('Sensor 3',
+                            child: Text('Vlammensensor',
                                 style: TextStyle(
                                     color: chartIndex == 2
                                         ? Colors.black
@@ -172,7 +172,7 @@ class _LijnGrafiek extends State<LijnGrafiek> {
                                 side: BorderSide(color: Colors.black45),
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(3))),
-                            child: Text('Sensor 4',
+                            child: Text('Geluidssensor',
                                 style: TextStyle(
                                     color: chartIndex == 3
                                         ? Colors.black

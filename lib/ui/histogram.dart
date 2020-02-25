@@ -58,10 +58,10 @@ class _Histogram extends State<Histogram> {
             });
 
             var data = [
-              ClicksPerYear('Sensor1', b1, Colors.blue.shade300),
-              ClicksPerYear('Sensor2', b2, Colors.blue.shade500),
-              ClicksPerYear('Sensor3', b3, Colors.blue.shade700),
-              ClicksPerYear('Sensor4', b4, Colors.blue.shade900),
+              ClicksPerYear('Lichtsensor', b1, Colors.blue.shade300),
+              ClicksPerYear('Bewegingssensor', b2, Colors.blue.shade500),
+              ClicksPerYear('Vlammensensor', b3, Colors.blue.shade700),
+              ClicksPerYear('Geluidssensor', b4, Colors.blue.shade900),
             ];
 
             var series = [
