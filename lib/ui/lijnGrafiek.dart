@@ -42,22 +42,22 @@ class _LijnGrafiek extends State<LijnGrafiek> {
 
               //data sensoren indelen naar de juiste grafieken
               switch (log.sensor) {
-                case "sensor1":
+                case "Lichtsensor":
                   {
                     line1[dateTime] = double.parse(log.waarde);
                   }
                   break;
-                case "sensor2":
+                case "Bewegingssensor":
                   {
                     line2[dateTime] = double.parse(log.waarde);
                   }
                   break;
-                case "sensor3":
+                case "Vlammensensor":
                   {
                     line3[dateTime] = double.parse(log.waarde);
                   }
                   break;
-                case "sensor4":
+                case "Geluidsensor":
                   {
                     line4[dateTime] = double.parse(log.waarde);
                   }

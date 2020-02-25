@@ -4,8 +4,9 @@ class LogModel {
   String waarde;
   String datum;
   int isConfirmed;
+  String prioriteit;
 
-  LogModel({this.id, this.sensor, this.waarde, this.datum, this.isConfirmed});
+  LogModel({this.id, this.sensor, this.waarde, this.datum, this.isConfirmed, this.prioriteit});
 
   factory LogModel.fromMap(Map<String, dynamic> json) => new LogModel(
     id: json["id"],
@@ -13,6 +14,7 @@ class LogModel {
     waarde: json["waarde"],
     datum: json["datum"],
     isConfirmed: json["isConfirmed"],
+    prioriteit: json["prioriteit"]
   );
 
   Map<String, dynamic> toMap() {
@@ -22,6 +24,7 @@ class LogModel {
       'waarde': waarde,
       'datum': datum,
       'isConfirmed': isConfirmed,
+      'prioriteit': prioriteit
     };
   }
 }

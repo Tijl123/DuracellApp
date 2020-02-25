@@ -130,10 +130,10 @@ void receive (List<String> arguments, BuildContext context) async {
       var arr = string.split(";");
       print(arr);
       // toont dialoogvenster bij ontvangen van message van RabbitMQ
-      showAlertDialog(context, arr[0], arr[1], arr[2]);
+      showAlertDialog(context, arr[0], arr[1], arr[2], arr[3]);
 
       // voegt log toe aan de database
-      LogModel log = new LogModel(id: null, sensor: arr[0], waarde: arr[1], datum: arr[2], isConfirmed: 0);
+      LogModel log = new LogModel(id: null, sensor: arr[0], waarde: arr[1], datum: arr[2], isConfirmed: 0, prioriteit: arr[3]);
       await DBProvider.db.insertLog(log);
 
       // stuurt push notificatie bij ontvangen van message van RabbitMQ
@@ -143,7 +143,7 @@ void receive (List<String> arguments, BuildContext context) async {
 }
 
 //toont dialoogvenster met gegevens van de RabbitMQ message
-showAlertDialog(BuildContext context, String sensor, String waarde, String datum) {
+showAlertDialog(BuildContext context, String sensor, String waarde, String datum, String prioriteit) {
   showDialog(
     context: context,
     barrierDismissible: false,

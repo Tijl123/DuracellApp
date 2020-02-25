@@ -28,12 +28,12 @@ class DBProvider {
     String path = join(documentsDirectory.path, "LogDB.db");
     return await openDatabase(path, version: 1, onOpen: (db) {
     }, onCreate: (Database db, int version) async {
-      await db.execute("CREATE TABLE Log(id INTEGER PRIMARY KEY, sensor TEXT, waarde TEXT, datum TEXT, isConfirmed INTEGER)");
+      await db.execute("CREATE TABLE Log(id INTEGER PRIMARY KEY, sensor TEXT, waarde TEXT, datum TEXT, isConfirmed INTEGER, prioriteit TEXT)");
       await db.execute("CREATE TABLE Sensor(id INTEGER PRIMARY KEY, sensor TEXT, isSubscribed INTEGER)");
-      await db.rawInsert("INSERT Into Sensor (id,sensor, isSubscribed) VALUES (1,'sensor1', 1)");
-      await db.rawInsert("INSERT Into Sensor (id,sensor, isSubscribed) VALUES (2,'sensor2', 1)");
-      await db.rawInsert("INSERT Into Sensor (id,sensor, isSubscribed) VALUES (3,'sensor3', 0)");
-      await db.rawInsert("INSERT Into Sensor (id,sensor, isSubscribed) VALUES (4,'sensor4', 0)");
+      await db.rawInsert("INSERT Into Sensor (id,sensor, isSubscribed) VALUES (1,'Lichtsensor', 1)");
+      await db.rawInsert("INSERT Into Sensor (id,sensor, isSubscribed) VALUES (2,'Bewegingssensor', 1)");
+      await db.rawInsert("INSERT Into Sensor (id,sensor, isSubscribed) VALUES (3,'Vlammensensor', 0)");
+      await db.rawInsert("INSERT Into Sensor (id,sensor, isSubscribed) VALUES (4,'Geluidssensor', 0)");
     });
   }
 
@@ -45,7 +45,7 @@ class DBProvider {
     int id = table.first["id"];
     //insert to the table using the new id
     var raw = await db.rawInsert(
-        "INSERT Into Log (id,sensor,waarde,datum)"
+        "INSERT Into Log (id,sensor,waarde,datum,prioriteit)"
             " VALUES (?,?,?,?)",
         [id, log.sensor, log.waarde, log.datum]);
     return raw;
