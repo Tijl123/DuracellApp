@@ -4,7 +4,8 @@ import 'package:duracellapp/LogModel.dart';
 import 'package:duracellapp/SensorModel.dart';
 import 'package:duracellapp/ui/log.dart';
 import 'package:duracellapp/ui/settings.dart';
-import 'package:duracellapp/ui/grafiek.dart';
+import 'package:duracellapp/ui/lijnGrafiek.dart';
+import 'package:duracellapp/ui/histogram.dart';
 import 'package:flutter/material.dart';
 import "dart:io";
 import "package:dart_amqp/dart_amqp.dart";
@@ -28,7 +29,8 @@ class _HomeState extends State<Home> {
   //initialiseren navigatie-componenten
   final List<Widget> _children = [
     Log(),
-    Grafiek(),
+    LijnGrafiek(),
+    Histogram(),
     Settings(),
   ];
 
@@ -57,13 +59,16 @@ class _HomeState extends State<Home> {
     return Scaffold(
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         onTap: onTabTapped,
         currentIndex: _currentIndex,
         items: [
           BottomNavigationBarItem(
-              icon: Icon(Icons.access_time), title: Text("Log")),
+              icon: Icon(Icons.history), title: Text("Log")),
           BottomNavigationBarItem(
-              icon: Icon(Icons.timeline), title: Text("Grafiek")),
+              icon: Icon(Icons.timeline), title: Text("Waardes")),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.equalizer), title: Text("Aantallen")),
           BottomNavigationBarItem(
               icon: Icon(Icons.settings), title: Text("Instellingen")),
         ],
