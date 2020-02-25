@@ -28,7 +28,7 @@ class DBProvider {
     String path = join(documentsDirectory.path, "LogDB.db");
     return await openDatabase(path, version: 1, onOpen: (db) {
     }, onCreate: (Database db, int version) async {
-      await db.execute("CREATE TABLE Log(id INTEGER PRIMARY KEY, sensor TEXT, waarde TEXT, datum TEXT)");
+      await db.execute("CREATE TABLE Log(id INTEGER PRIMARY KEY, sensor TEXT, waarde TEXT, datum TEXT, isConfirmed INTEGER)");
       await db.execute("CREATE TABLE Sensor(id INTEGER PRIMARY KEY, sensor TEXT, isSubscribed INTEGER)");
       await db.rawInsert("INSERT Into Sensor (id,sensor, isSubscribed) VALUES (1,'sensor1', 1)");
       await db.rawInsert("INSERT Into Sensor (id,sensor, isSubscribed) VALUES (2,'sensor2', 1)");
@@ -65,11 +65,19 @@ class DBProvider {
     return raw;
   }
 
-  //Methode om senser te wijzigen
+  //Methode om sensor te wijzigen
   updateSensor(SensorModel sensor) async {
     final db = await database;
     var res = await db.update("Sensor", sensor.toMap(),
         where: "id = ?", whereArgs: [sensor.id]);
+    return res;
+  }
+
+  //Methode om log te wijzigen
+  updateLog(LogModel log) async {
+    final db = await database;
+    var res = await db.update("Log", log.toMap(),
+        where: "id = ?", whereArgs: [log.id]);
     return res;
   }
 

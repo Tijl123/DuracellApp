@@ -14,6 +14,7 @@ class _Log extends State<Log> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   Timer timer;
   Future<List<LogModel>> _data;
+  bool isCheck = false;
 
   //zorgt dat de lijst met logs regelmatig vernieuwd wordt
   @override
@@ -113,7 +114,20 @@ class _Log extends State<Log> {
                           child: ListTile(
                             title: Text(item.sensor),
                             subtitle: Text(item.waarde),
-                            trailing: Text(item.datum),
+                            leading: new Checkbox(
+                                activeColor: Colors.green,
+                                value: (item.isConfirmed == 1)? true : false,
+                                onChanged: (bool value) {
+                                  setState(() {
+                                    if(value == true){
+                                      item.isConfirmed = 1;
+                                    }else{
+                                      item.isConfirmed = 0;
+                                    }
+                                    DBProvider.db.updateLog(item);
+                                  });
+                                }),
+                            trailing: Text(item.datum)
                           ),
                         ),
                       );

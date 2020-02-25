@@ -128,12 +128,11 @@ void receive (List<String> arguments, BuildContext context) async {
       showAlertDialog(context, arr[0], arr[1], arr[2]);
 
       // voegt log toe aan de database
-      LogModel log = new LogModel(id: null, sensor: arr[0], waarde: arr[1], datum: arr[2]);
+      LogModel log = new LogModel(id: null, sensor: arr[0], waarde: arr[1], datum: arr[2], isConfirmed: 0);
       await DBProvider.db.insertLog(log);
 
       // stuurt push notificatie bij ontvangen van message van RabbitMQ
       showOngoingNotification(notifications, title: "Sensor: " + arr[0], body: "Waarde: " + arr[1], id: int.parse(arr[1]));
-      new Future.delayed(const Duration(seconds: 1));
     });
   });
 }
