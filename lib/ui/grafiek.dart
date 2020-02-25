@@ -22,7 +22,6 @@ class _Grafiek extends State<Grafiek> {
   int b2 = 0;
   int b3 = 0;
   int b4 = 0;
-  String dropdownValue = 'One';
 
   @override
   Widget build(BuildContext context) {
@@ -75,9 +74,9 @@ class _Grafiek extends State<Grafiek> {
             });
 
             var data = [
-              ClicksPerYear('Sensor1', b1, Colors.blue.shade900),
-              ClicksPerYear('Sensor2', b2, Colors.blue.shade900),
-              ClicksPerYear('Sensor3', b3, Colors.blue.shade900),
+              ClicksPerYear('Sensor1', b1, Colors.blue.shade300),
+              ClicksPerYear('Sensor2', b2, Colors.blue.shade500),
+              ClicksPerYear('Sensor3', b3, Colors.blue.shade700),
               ClicksPerYear('Sensor4', b4, Colors.blue.shade900),
             ];
 

@@ -119,7 +119,7 @@ void receive (List<String> arguments, BuildContext context) async {
     );
   })
       .then((Consumer consumer) {
-    consumer.listen((AmqpMessage event) {
+    consumer.listen((AmqpMessage event) async {
       print(" [x] ${event.routingKey}:'${event.payloadAsString}'");
       var string = event.payloadAsString;
       var arr = string.split(";");
@@ -129,7 +129,7 @@ void receive (List<String> arguments, BuildContext context) async {
 
       // voegt log toe aan de database
       LogModel log = new LogModel(id: null, sensor: arr[0], waarde: arr[1], datum: arr[2]);
-      DBProvider.db.insertLog(log);
+      await DBProvider.db.insertLog(log);
 
       // stuurt push notificatie bij ontvangen van message van RabbitMQ
       showOngoingNotification(notifications, title: "Sensor: " + arr[0], body: "Waarde: " + arr[1], id: int.parse(arr[1]));
