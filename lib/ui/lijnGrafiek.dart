@@ -6,22 +6,18 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
-class Grafiek extends StatefulWidget {
-  Grafiek({Key key, this.title}) : super(key: key);
+class LijnGrafiek extends StatefulWidget {
+  LijnGrafiek({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _Grafiek createState() => _Grafiek();
+  _LijnGrafiek createState() => _LijnGrafiek();
 }
 
-class _Grafiek extends State<Grafiek> {
+class _LijnGrafiek extends State<LijnGrafiek> {
   Future<List<LogModel>> logs;
   int chartIndex = 0;
-  int b1 = 0;
-  int b2 = 0;
-  int b3 = 0;
-  int b4 = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -49,60 +45,25 @@ class _Grafiek extends State<Grafiek> {
                 case "sensor1":
                   {
                     line1[dateTime] = double.parse(log.waarde);
-                    b1 = b1 + 1;
                   }
                   break;
                 case "sensor2":
                   {
                     line2[dateTime] = double.parse(log.waarde);
-                    b2 = b2 + 1;
                   }
                   break;
                 case "sensor3":
                   {
                     line3[dateTime] = double.parse(log.waarde);
-                    b3 = b3 + 1;
                   }
                   break;
                 case "sensor4":
                   {
                     line4[dateTime] = double.parse(log.waarde);
-                    b4 = b4 + 1;
                   }
                   break;
               }
             });
-
-            var data = [
-              ClicksPerYear('Sensor1', b1, Colors.blue.shade300),
-              ClicksPerYear('Sensor2', b2, Colors.blue.shade500),
-              ClicksPerYear('Sensor3', b3, Colors.blue.shade700),
-              ClicksPerYear('Sensor4', b4, Colors.blue.shade900),
-            ];
-
-            var series = [
-              charts.Series(
-                domainFn: (ClicksPerYear clickData, _) => clickData.year,
-                measureFn: (ClicksPerYear clickData, _) => clickData.clicks,
-                colorFn: (ClicksPerYear clickData, _) => clickData.color,
-                id: 'Clicks',
-                data: data,
-              ),
-            ];
-
-            var barChart = charts.BarChart(
-              series,
-              animate: true,
-            );
-
-
-            var chartWidget = Padding(
-              padding: EdgeInsets.all(32.0),
-              child: SizedBox(
-                height: 200.0,
-                child: barChart,
-              ),
-            );
 
             //Nakijken of de grafiek leeg is
             if (line1.isEmpty) {
@@ -228,15 +189,11 @@ class _Grafiek extends State<Grafiek> {
                     Expanded(
                         child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: <Widget>[
+                      child:
                           AnimatedLineChart(
                             chart,
                             key: UniqueKey(),
-                          ),
-                        chartWidget,
-                        ],
-                      ), //Unique key to force animations
+                          ), //Unique key to force animations
                     )),
                     SizedBox(width: 200, height: 50, child: Text('')),
                   ]),
