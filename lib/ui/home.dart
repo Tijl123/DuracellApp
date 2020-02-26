@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:device_info/device_info.dart';
 import 'package:duracellapp/Database.dart';
 import 'package:duracellapp/LogModel.dart';
 import 'package:duracellapp/SensorModel.dart';
@@ -14,6 +13,7 @@ import "package:dart_amqp/dart_amqp.dart";
 import 'package:duracellapp/local_notification_helper.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:async';
+import 'package:device_id/device_id.dart';
 
 final notifications = FlutterLocalNotificationsPlugin();
 
@@ -121,7 +121,7 @@ void receive (List<String> arguments, BuildContext context) async {
   })
       .then((Exchange exchange) async{
     print(" [*] Waiting for messages in logs. To Exit press CTRL+C");
-    return exchange.bindQueueConsumer(await _getId(context), routingKeys,
+    return exchange.bindQueueConsumer(await DeviceId.getID, routingKeys,
         consumerTag: "C1direct", noAck: true
     );
   })
@@ -142,17 +142,4 @@ void receive (List<String> arguments, BuildContext context) async {
 
     });
   });
-}
-
-
-// vraagt id van device op
-Future<String> _getId(BuildContext context) async {
-  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-  if (Theme.of(context).platform == TargetPlatform.iOS) {
-    IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
-    return iosDeviceInfo.identifierForVendor; // unique ID on iOS
-  } else {
-    AndroidDeviceInfo androidDeviceInfo = await deviceInfo.androidInfo;
-    return androidDeviceInfo.androidId; // unique ID on Android
-  }
 }

@@ -1,7 +1,7 @@
 import 'dart:collection';
 
 import 'package:dart_amqp/dart_amqp.dart';
-import 'package:device_info/device_info.dart';
+import 'package:device_id/device_id.dart';
 import 'package:duracellapp/Database.dart';
 import 'package:duracellapp/SensorModel.dart';
 import 'package:flutter/material.dart';
@@ -128,24 +128,12 @@ void resetConnection(BuildContext context, String unsub){
   Client client = new Client(settings: settings);
   client.channel()
       .then((Channel channel) async {
-        channel.queue(await _getId(context));
+        channel.queue(await DeviceId.getID);
         return channel.exchange("C1direct", ExchangeType.DIRECT, durable: true);
       })
       .then((Exchange exchange) async{
-        exchange.channel.queue(await _getId(context)) .then((Queue queue) {
+        exchange.channel.queue(await DeviceId.getID) .then((Queue queue) {
           return queue.unbind(exchange, unsub);
         });
   });
-}
-
-//vraagt id van device op
-Future<String> _getId(BuildContext context) async {
-  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-  if (Theme.of(context).platform == TargetPlatform.iOS) {
-    IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
-    return iosDeviceInfo.identifierForVendor; // unique ID on iOS
-  } else {
-    AndroidDeviceInfo androidDeviceInfo = await deviceInfo.androidInfo;
-    return androidDeviceInfo.androidId; // unique ID on Android
-  }
 }

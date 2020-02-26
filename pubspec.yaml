@@ -25,11 +25,11 @@ dependencies:
   workmanager: ^0.2.0
   sqflite: ^1.2.0
   path:
-  device_info: ^0.4.1+4
   splashscreen: ^1.2.0
   fl_animated_linechart: ^1.0.2
   intl: ^0.16.1
   charts_flutter: ^0.8.1
+  device_id: ^0.2.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
